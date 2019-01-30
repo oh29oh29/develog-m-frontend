@@ -7,7 +7,7 @@
       </a>
     </div>
     <div class="member-wrap">
-      <button id="signInBtn" class="sign-in-btn" onclick="location.href='/member/sign-in'">로그인</button>
+      <router-link to="/sign-in" class="sign-in-btn">로그인</router-link>
     </div>
   </header>
 </template>

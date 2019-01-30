@@ -1,5 +1,4 @@
 <template>
-  <section>
     <div class="sign-in-wrap">
       <form class="sign-in-form" method="post">
         <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
@@ -13,18 +12,17 @@
           <button id="submitBtn" class="sign-in-box submit-btn">로그인</button>
         </div>
         <div class="sign-in-option-row">
-          <a href="/member/search/id" id="idSearchLink" class="option-link id-search-link">아이디 찾기</a>
-          <a href="/member/search/password" id="passwdSearchLink" class="option-link passwd-search-link">비밀번호 찾기</a>
-          <a href="/member/sign-up" id="signUpLink" class="option-link sign-up-link">회원가입</a>
+          <router-link to="/search/id" class="option-link id-search-link">아이디 찾기</router-link>
+          <router-link to="/search/password" class="option-link passwd-search-link">비밀번호 찾기</router-link>
+          <router-link to="/sign-up" class="option-link sign-up-link">회원가입</router-link>
         </div>
       </form>
     </div>
-  </section>
 </template>
 
 <script>
 export default {
-  name: "signIn"
+  name: 'SignIn'
 }
 </script>
 
