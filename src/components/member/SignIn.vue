@@ -1,4 +1,5 @@
 <template>
+  <section>
     <div class="sign-in-wrap">
       <form class="sign-in-form" method="post">
         <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
@@ -18,6 +19,7 @@
         </div>
       </form>
     </div>
+  </section>
 </template>
 
 <script>

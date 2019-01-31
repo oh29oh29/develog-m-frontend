@@ -1,16 +1,12 @@
 <template>
   <div id="app">
-    <Header></Header>
-    <Body></Body>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header'
-import Body from '@/components/Body'
 export default {
-  name: 'App',
-  components: {Body, Header}
+  name: 'App'
 }
 </script>
 
