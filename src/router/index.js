@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
+import PostList from '@/components/post/List'
 import SignIn from '@/components/member/SignIn'
 import SignUp from '@/components/member/SignUp'
 import Admin from '@/components/admin/Home'
@@ -15,6 +16,11 @@ export default new Router({
       name: 'Home',
       component: Home,
       children: [
+        {
+          path: '',
+          name: 'List',
+          component: PostList
+        },
         {
           path: 'sign-in',
           name: 'SignIn',
