@@ -7,42 +7,29 @@
           <legend>기본 정보</legend>
           <div class="sign-up-row">
             <label for="id" class="label-for-input">아이디</label>
-            <input type="text" id="id" class="sign-up-box input-text input-short-text" name="id">
+            <input type="text" id="id" class="sign-up-box input-text input-short-text" name="id" v-model="idValue" v-on:blur="validate">
             <button type="button" id="idCheckBtn" class="sub-btn ready-sub-btn">중복확인</button>
-            <p class="validation-msg"></p>
+            <p class="validation-msg" v-show="validatorFlags.id.isEmpty || validatorFlags.id.doesExist || validatorFlags.id.isNotAlphabatAndNumber">{{ validationMsg }}</p>
           </div>
           <div class="sign-up-row">
             <label for="password" class="label-for-input">비밀번호</label>
             <input type="password" id="password" class="sign-up-box input-text" name="passwd">
-            <p class="validation-msg"></p>
+            <p class="validation-msg" v-show="validatorFlags.password.isEmpty || validatorFlags.password.isLessThan8">{{ validationMsg }}</p>
           </div>
           <div class="sign-up-row">
             <label for="passwordConfirm" class="label-for-input">비밀번호 확인</label>
             <input type="password" id="passwordConfirm" class="sign-up-box input-text">
-            <p class="validation-msg"></p>
+            <p class="validation-msg" v-show="validatorFlags.password.isEmpty || validatorFlags.password.isNotMatch">{{ validationMsg }}</p>
           </div>
           <div class="sign-up-row">
             <label for="name" class="label-for-input">이름</label>
             <input type="text" id="name" class="sign-up-box input-text" name="name">
-            <p class="validation-msg"></p>
+            <p class="validation-msg" v-show="validatorFlags.name.isEmpty">{{ validationMsg }}</p>
           </div>
           <div class="sign-up-row">
             <label for="email" class="label-for-input">이메일</label>
             <input type="text" id="email" class="sign-up-box input-text" name="email">
-            <p class="validation-msg"></p>
-          </div>
-        </fieldset>
-        <fieldset class="sign-up-fieldset">
-          <legend>부가 정보</legend>
-          <div class="sign-up-row">
-            <label for="passwordQuestion" class="label-for-input">비밀번호 찾기 질문</label>
-            <input type="text" id="passwordQuestion" class="sign-up-box input-text" name="passwdQuestion">
-            <p class="validation-msg"></p>
-          </div>
-          <div class="sign-up-row">
-            <label for="passwordAnswer" class="label-for-input">비밀번호 찾기 답변</label>
-            <input type="text" id="passwordAnswer" class="sign-up-box input-text" name="passwdAnswer">
-            <p class="validation-msg"></p>
+            <p class="validation-msg" v-show="validatorFlags.email.isEmpty || validatorFlags.email.isNotEmailFormat">{{ validationMsg }}</p>
           </div>
         </fieldset>
         <div class="sign-up-row">
@@ -54,8 +41,26 @@
 </template>
 
 <script>
+import { Validator } from '@/assets/js/validator'
+let validator = new Validator()
 export default {
-  name: 'SignUp'
+  name: 'SignUp',
+  created () {
+    this.validatorFlags = validator.getFlags()
+    this.validatorFlags.id.isEmpty = true
+  },
+  data () {
+    return {
+      validatorFlags: null,
+      validationMsg: 'test',
+      idValue: ''
+    }
+  },
+  methods: {
+    validate () {
+      console.log(validator.checkRequiredValue(this.idValue))
+    }
+  }
 }
 </script>
 
@@ -101,7 +106,6 @@ export default {
   border-left: 1px solid #000;
 }
 .validation-msg {
-  display: none;
   font-size: 13px;
   padding: 5px 0 0 0;
   color: #ff0000;
