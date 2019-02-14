@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import Navigation from '@/components/admin/Navigation'
+import Navigation from './Navigation'
 
 export default {
   name: 'Home',
-  components: {Navigation}
+  components: { Navigation }
 }
 </script>
 

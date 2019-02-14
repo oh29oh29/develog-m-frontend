@@ -8,25 +8,25 @@
     </div>
     <form id="test">
       <!--<input type="hidden" id="csrf" th:data-header="${_csrf.headerName}" th:data-token="${_csrf.token}" />-->
-      <div class="categoryList category-mng-wrap category-mng-body" th:each="category, iter : ${categories}">
-        <input type="hidden" class="categoryId" th:value="${category.id}"/>
-        <input type="text" class="categoryName category-item category-name" th:value="${category.name}"/>
-        <input type="text" class="categoryOrdering category-item category-ordering" th:value="${category.ordering}"/>
+      <div class="categoryList category-mng-wrap category-mng-body" v-for="category in categories" v-bind:key="category.id">
+        <input type="hidden" class="categoryId" v-model="category.id"/>
+        <input type="text" class="categoryName category-item category-name" v-model="category.name"/>
+        <input type="text" class="categoryOrdering category-item category-ordering" v-model="category.ordering"/>
         <select class="categoryIsVisible category-item category-visible" name="isVisible">
-          <option value="1" th:selected="${category.isVisible == 1}">공개</option>
-          <option value="0" th:selected="${category.isVisible == 0}">비공개</option>
+          <option value="1" v-bind:selected="category.isVisible === 1">공개</option>
+          <option value="0" v-bind:selected="category.isVisible === 0">비공개</option>
         </select>
         <button type="button" class="categorySaveBtn category-item category-btn">수정</button>
         <button type="button" class="categoryDelBtn category-item category-btn">삭제</button>
       </div>
       <div class="categoryList category-mng-wrap">
-        <input type="text" class="categoryName category-item category-name"/>
-        <input type="text" class="categoryOrdering category-item category-ordering"/>
-        <select class="categoryIsVisible category-item category-visible">
+        <input type="text" class="category-item category-name" v-model="newCategory.name"/>
+        <input type="text" class="category-item category-ordering" v-model="newCategory.ordering"/>
+        <select class="category-item category-visible" v-model="newCategory.isVisible">
           <option value="1">공개</option>
           <option value="0">비공개</option>
         </select>
-        <button type="button" class="categorySaveBtn category-item category-btn">추가</button>
+        <button type="button" class="category-item category-btn" v-on:click="addCategory">추가</button>
       </div>
     </form>
   </section>
@@ -34,7 +34,39 @@
 
 <script>
 export default {
-  name: 'Category'
+  name: 'Category',
+  created () {
+    this.fetchData();
+  },
+  data () {
+    return {
+      categories: [],
+      newCategory: {
+        id: '',
+        name: '',
+        ordering: '',
+        isVisible: ''
+      }
+    }
+  },
+  methods: {
+    fetchData () {
+      const _this = this
+      this.$http.get('/category').then(result => {
+        console.log(result)
+        _this.categories = result.data
+      })
+    },
+    addCategory () {
+      const _this = this
+      this.$http.post('/category', {
+        category: _this.newCategory
+      }).then(result => {
+        console.log(result)
+        // _this.categories = result.data
+      })
+    }
+  }
 }
 </script>
 

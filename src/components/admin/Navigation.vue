@@ -1,9 +1,9 @@
 <template>
   <nav>
     <ul>
-      <li><router-link to="/admin/categories">DASHBOARD</router-link></li>
-      <li><router-link to="/admin/categories">회원 관리</router-link></li>
-      <li><router-link to="/admin/categories">카테고리 관리</router-link></li>
+      <li><router-link to="/admin/category">DASHBOARD</router-link></li>
+      <li><router-link to="/admin/category">회원 관리</router-link></li>
+      <li><router-link to="/admin/category">카테고리 관리</router-link></li>
     </ul>
   </nav>
 </template>
