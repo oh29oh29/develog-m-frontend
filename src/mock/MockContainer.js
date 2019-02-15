@@ -10,11 +10,9 @@ export class MockContainer {
 
     createResponse () {
         this.mock.onGet('/category').reply(200, categories);
-        this.mock.onPost('/category').reply(config => {
-            console.log(JSON.parse(config.data))
-            console.log(JSON.parse(config.data).params)
-            return [200]
-        });
+        this.mock.onPost('/category').reply(200);
+        this.mock.onPatch('/category').reply(200);
+        this.mock.onDelete('/category').reply(200);
         this.mock.onGet('/post').reply(200, posts);
     }
 }

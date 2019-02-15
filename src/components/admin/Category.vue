@@ -8,16 +8,16 @@
     </div>
     <form id="test">
       <!--<input type="hidden" id="csrf" th:data-header="${_csrf.headerName}" th:data-token="${_csrf.token}" />-->
-      <div class="categoryList category-mng-wrap category-mng-body" v-for="category in categories" v-bind:key="category.id">
+      <div class="categoryList category-mng-wrap category-mng-body" v-for="(category, index) in categories" v-bind:key="category.id">
         <input type="hidden" class="categoryId" v-model="category.id"/>
         <input type="text" class="categoryName category-item category-name" v-model="category.name"/>
         <input type="text" class="categoryOrdering category-item category-ordering" v-model="category.ordering"/>
         <select class="categoryIsVisible category-item category-visible" name="isVisible">
-          <option value="1" v-bind:selected="category.isVisible === 1">공개</option>
-          <option value="0" v-bind:selected="category.isVisible === 0">비공개</option>
+          <option value="1" v-bind:selected="category.isVisible === '1'">공개</option>
+          <option value="0" v-bind:selected="category.isVisible === '0'">비공개</option>
         </select>
-        <button type="button" class="categorySaveBtn category-item category-btn">수정</button>
-        <button type="button" class="categoryDelBtn category-item category-btn">삭제</button>
+        <button type="button" class="categorySaveBtn category-item category-btn" v-on:click="updateCategory(index)">수정</button>
+        <button type="button" class="categoryDelBtn category-item category-btn" v-on:click="deleteCategory(category.id, index)">삭제</button>
       </div>
       <div class="categoryList category-mng-wrap">
         <input type="text" class="category-item category-name" v-model="newCategory.name"/>
@@ -52,19 +52,44 @@ export default {
   methods: {
     fetchData () {
       const _this = this
-      this.$http.get('/category').then(result => {
-        console.log(result)
-        _this.categories = result.data
-      })
+      this.$http.get('/category')
+        .then(result => {
+          console.log(result)
+          _this.categories = result.data
+        })
     },
     addCategory () {
       const _this = this
-      this.$http.post('/category', {
-        category: _this.newCategory
-      }).then(result => {
-        console.log(result)
-        // _this.categories = result.data
-      })
+      this.$http.post('/category', _this.newCategory)
+        .then(result => {
+          console.log(result)
+          _this.categories.push(_this.newCategory)
+        }).catch(() => {
+            alert("카테고리 추가 실패")
+        })
+    },
+    updateCategory (index) {
+      const _this = this
+      this.$http.patch('/category', _this.categories[index])
+        .then(result => {
+          console.log(result)
+        }).catch(() => {
+          alert("카테고리 수정 실패")
+        })
+    },
+    deleteCategory (id, index) {
+      if (!confirm("정말 삭제하시겠습니까?")) {
+        return false;
+      }
+
+      const _this = this
+      this.$http.delete('/category', id)
+        .then(result => {
+          console.log(result)
+          _this.categories.splice(index, 1)
+        }).catch(() => {
+          alert("카테고리 제거 실패")
+        })
     }
   }
 }
