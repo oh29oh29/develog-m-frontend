@@ -35,9 +35,6 @@
 <script>
 export default {
   name: 'Category',
-  created () {
-    this.fetchData();
-  },
   data () {
     return {
       categories: [],
@@ -48,6 +45,9 @@ export default {
         isVisible: ''
       }
     }
+  },
+  created () {
+    this.fetchData();
   },
   methods: {
     fetchData () {

@@ -41,20 +41,20 @@
 </template>
 
 <script>
-import { Validator } from '@/assets/js/validator'
-let validator = new Validator()
+import { Validator } from '../../../assets/js/validator'
+const validator = new Validator()
 export default {
   name: 'SignUp',
-  created () {
-    this.validatorFlags = validator.getFlags()
-    this.validatorFlags.id.isEmpty = true
-  },
   data () {
     return {
       validatorFlags: null,
       validationMsg: 'test',
       idValue: ''
     }
+  },
+  created () {
+    this.validatorFlags = validator.getFlags()
+    this.validatorFlags.id.isEmpty = true
   },
   methods: {
     validate () {

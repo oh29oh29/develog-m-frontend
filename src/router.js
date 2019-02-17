@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './components/Home'
-import PostList from './components/post/List'
-import SignIn from './components/member/SignIn'
-import SignUp from './components/member/SignUp'
-import Admin from './components/admin/Home'
-import Category from './components/admin/Category'
+
+import MHome from './components/main/Home'
+import MPostList from './components/main/post/List'
+import MSignIn from './components/main/member/SignIn'
+import MSignUp from './components/main/member/SignUp'
+import MCategory from './components/main/post/Category'
+
+import AHome from './components/admin/Home'
+import ACategory from './components/admin/Category'
 
 Vue.use(Router)
 
@@ -15,34 +18,37 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: MHome,
       children: [
         {
           path: '',
           name: 'list',
-          component: PostList
+          components: {
+            category: MCategory,
+            default: MPostList
+          }
         },
         {
           path: 'sign-in',
           name: 'signIn',
-          component: SignIn
+          component: MSignIn
         },
         {
           path: 'sign-up',
           name: 'signUp',
-          component: SignUp
+          component: MSignUp
         }
       ]
     },
     {
       path: '/admin',
       name: 'admin',
-      component: Admin,
+      component: AHome,
       children: [
         {
           path: 'category',
           name: 'category',
-          component: Category
+          component: ACategory
         }
       ]
     }
