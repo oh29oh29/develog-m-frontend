@@ -1,10 +1,10 @@
 <template>
   <header>
     <div class="logo-wrap">
-      <a href="/" class="logo-link">
+      <router-link to="/" class="logo-link">
         <span class="logo-text">oh29oh29</span>
         <span class="logo-text">기술블로그</span>
-      </a>
+      </router-link>
     </div>
     <div class="member-wrap">
       <router-link to="/sign-in" class="sign-in-btn">로그인</router-link>
