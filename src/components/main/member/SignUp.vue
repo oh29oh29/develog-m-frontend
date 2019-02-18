@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import { Validator } from '../../../assets/js/validator'
-const validator = new Validator()
+import { Validator } from '../../../assets/js/validator';
+const validator = new Validator();
 export default {
   name: 'SignUp',
   data () {
@@ -53,12 +53,12 @@ export default {
     }
   },
   created () {
-    this.validatorFlags = validator.getFlags()
-    this.validatorFlags.id.isEmpty = true
+    this.validatorFlags = validator.getFlags();
+    this.validatorFlags.id.isEmpty = true;
   },
   methods: {
     validate () {
-      console.log(validator.checkRequiredValue(this.idValue))
+      console.log(validator.checkRequiredValue(this.idValue));
     }
   }
 }

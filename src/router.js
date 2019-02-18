@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-import MHome from './components/main/Home'
-import MPostList from './components/main/post/List'
-import MSignIn from './components/main/member/SignIn'
-import MSignUp from './components/main/member/SignUp'
-import MCategory from './components/main/post/Category'
+import MHome from './components/main/Home';
+import MPostList from './components/main/post/List';
+import MSignIn from './components/main/member/SignIn';
+import MSignUp from './components/main/member/SignUp';
+import MCategory from './components/main/post/Category';
 
-import AHome from './components/admin/Home'
-import ACategory from './components/admin/Category'
+import AHome from './components/admin/Home';
+import ACategory from './components/admin/Category';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -21,14 +21,6 @@ export default new Router({
       component: MHome,
       children: [
         {
-          path: '',
-          name: 'list',
-          components: {
-            category: MCategory,
-            default: MPostList
-          }
-        },
-        {
           path: 'sign-in',
           name: 'signIn',
           component: MSignIn
@@ -37,6 +29,29 @@ export default new Router({
           path: 'sign-up',
           name: 'signUp',
           component: MSignUp
+        },
+        {
+          path: '',
+          name: 'list',
+          components: {
+            category: MCategory,
+            default: MPostList
+          }
+        },
+        {
+          path: ':categoryName',
+          name: 'list2',
+          components: {
+            category: MCategory,
+            default: MPostList
+          }
+        },
+        {
+          path: ':categoryName/:postName',
+          name: 'detail',
+          components: {
+            default: MPostList
+          }
         }
       ]
     },

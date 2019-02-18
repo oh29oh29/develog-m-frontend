@@ -1,9 +1,9 @@
 <template>
   <section class="post-list-wrap">
     <article class="post" v-for="post in posts" v-bind:key="post.id">
-      <span>{{ post.title }}</span>
-      <span>{{ post.regDate }}</span>
-      <p>{{ post.description }}</p>
+      <span class="title">{{ post.title }}</span>
+      <span class="regDate">{{ post.regDate }}</span>
+      <p class="description">{{ post.description }}</p>
     </article>
   </section>
 </template>
@@ -11,22 +11,26 @@
 <script>
 export default {
   name: 'List',
+  props: ['categoryName'],
   data () {
     return {
       posts: []
     }
   },
   created () {
-    this.fetchData()
+    this.fetchData('');
+  },
+  updated () {
+    this.fetchData(this.categoryName);
   },
   methods: {
-    fetchData () {
-      const _this = this
-      this.$http.get('/post')
-        .then(result => {
-          console.log(result)
-          _this.posts = result.data
-        })
+    fetchData (categoryName) {
+      const _this = this;
+      this.$http.get('/' + categoryName)
+        .then(response => {
+          console.log(response);
+          _this.posts = response.data;
+        });
     }
   }
 }
@@ -36,10 +40,25 @@ export default {
 .post-list-wrap {
   display: inline-block;
   width: 680px;
-  margin: 0 20px;
   font-size: 16px;
+  line-height: 50px;
 }
 .post {
+  font-size: 20px;
+  padding: 20px 20px;
+  border-bottom: 1px solid black;
+}
+.title {
 
+}
+.regDate {
+  font-size: 16px;
+  float: right;
+  line-height: 100px;
+  width: 100px;
+  text-align: center;
+}
+.description {
+  width: 540px;
 }
 </style>

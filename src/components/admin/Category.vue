@@ -51,30 +51,32 @@ export default {
   },
   methods: {
     fetchData () {
-      const _this = this
+      const _this = this;
       this.$http.get('/category')
-        .then(result => {
-          console.log(result)
-          _this.categories = result.data
-        })
+        .then(response => {
+          console.log(response);
+          _this.categories = response.data;
+        });
     },
     addCategory () {
-      const _this = this
+      const _this = this;
       this.$http.post('/category', _this.newCategory)
-        .then(result => {
-          console.log(result)
-          _this.categories.push(_this.newCategory)
-        }).catch(() => {
-            alert("카테고리 추가 실패")
+        .then(response => {
+          console.log(response);
+          _this.categories.push(_this.newCategory);
+        }).catch(error => {
+            alert("카테고리 추가 실패");
+            console.log(error);
         })
     },
     updateCategory (index) {
-      const _this = this
+      const _this = this;
       this.$http.patch('/category', _this.categories[index])
-        .then(result => {
-          console.log(result)
-        }).catch(() => {
-          alert("카테고리 수정 실패")
+        .then(response => {
+          console.log(response);
+        }).catch(error => {
+          alert("카테고리 수정 실패");
+          console.log(error);
         })
     },
     deleteCategory (id, index) {
@@ -82,13 +84,14 @@ export default {
         return false;
       }
 
-      const _this = this
+      const _this = this;
       this.$http.delete('/category', id)
-        .then(result => {
-          console.log(result)
-          _this.categories.splice(index, 1)
-        }).catch(() => {
-          alert("카테고리 제거 실패")
+        .then(response => {
+          console.log(response);
+          _this.categories.splice(index, 1);
+        }).catch(error => {
+          alert("카테고리 제거 실패");
+          console.log(error);
         })
     }
   }

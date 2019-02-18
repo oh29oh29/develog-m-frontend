@@ -1,7 +1,7 @@
 <template>
   <nav class="category-wrap">
     <div class="category" v-for="category in categories" v-bind:key="category.id">
-      <span>{{ category.name }}</span>
+      <span class="name" v-on:click="linkToList(category.name)">{{ category.name }}</span>
     </div>
   </nav>
 </template>
@@ -15,16 +15,22 @@ export default {
     }
   },
   created () {
-    this.fetchData()
+    this.fetchData();
+  },
+  updated () {
   },
   methods: {
     fetchData () {
-      const _this = this
+      const _this = this;
       this.$http.get('/category')
-        .then(result => {
-          console.log(result)
-          _this.categories = result.data
-        })
+        .then(response => {
+          console.log(response);
+          _this.categories = response.data;
+        });
+    },
+    linkToList (name) {
+      this.$router.push(name);
+      this.$emit('linkToList', name);
     }
   }
 }
@@ -39,6 +45,9 @@ export default {
   font-size: 16px;
 }
 .category {
-
+   margin: 5px 0;
+}
+.name {
+  cursor: pointer;
 }
 </style>
