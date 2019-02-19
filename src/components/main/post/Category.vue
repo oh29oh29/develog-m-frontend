@@ -40,11 +40,18 @@ export default {
   width: 200px;
   margin: 0 20px;
   font-size: 16px;
+  padding: 0 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 .category {
-   margin: 5px 0;
+   margin: 10px 0;
 }
 .name {
   cursor: pointer;
+  line-height: 20px;
+  vertical-align: sub;
+  display: inline-block;
 }
 </style>

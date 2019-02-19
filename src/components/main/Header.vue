@@ -22,7 +22,6 @@ export default {
 header {
   width: 100%;
   height: 60px;
-  background-color: cyan;
   margin: 0 0 80px 0;
 }
 .logo-wrap {

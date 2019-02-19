@@ -1,6 +1,11 @@
 <template>
-  <section>
-    {{ post.title }}
+  <section class="post-detail-wrap">
+    <article>
+      <span class="title">{{ post.title }}</span>
+      <div class="contents">
+        {{ post.contents }}
+      </div>
+    </article>
   </section>
 </template>
 
@@ -29,5 +34,14 @@ export default {
 </script>
 
 <style scoped>
-
+.post-detail-wrap {
+  width: 680px;
+  margin: 0 auto;
+}
+.title {
+  font-size: 26px;
+}
+.contents {
+  margin: 50px 0;
+}
 </style>

@@ -1,6 +1,7 @@
 <template>
   <section class="post-list-wrap">
     <article class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title)">
+      <span class="category">title1</span>
       <span class="title">{{ post.title }}</span>
       <span class="regDate">{{ post.regDate }}</span>
       <p class="description">{{ post.description }}</p>
@@ -17,7 +18,7 @@ export default {
     }
   },
   created () {
-    this.fetchData('');
+    this.fetchData(this.$route.params.categoryName);
   },
   watch: {
     '$route' () {
@@ -26,6 +27,10 @@ export default {
   },
   methods: {
     fetchData (categoryName) {
+      if (categoryName === undefined) {
+        categoryName = '';
+      }
+
       const _this = this;
       this.$http.get('/' + categoryName)
         .then(response => {
@@ -45,12 +50,20 @@ export default {
   display: inline-block;
   width: 680px;
   font-size: 16px;
-  line-height: 50px;
+  margin: 0 20px;
 }
 .post {
   font-size: 20px;
-  padding: 20px 20px;
+  padding: 40px 20px;
   border-bottom: 1px solid black;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.category {
+  display: block;
+  font-size: 16px;
+  color: #aaaaaa;
 }
 .title {
 
@@ -58,11 +71,13 @@ export default {
 .regDate {
   font-size: 16px;
   float: right;
-  line-height: 100px;
   width: 100px;
   text-align: center;
+  line-height: 55px;
+
 }
 .description {
   width: 540px;
+  margin: 20px 0 0 0;
 }
 </style>
