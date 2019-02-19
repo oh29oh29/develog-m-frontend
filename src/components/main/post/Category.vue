@@ -17,8 +17,6 @@ export default {
   created () {
     this.fetchData();
   },
-  updated () {
-  },
   methods: {
     fetchData () {
       const _this = this;
@@ -30,7 +28,6 @@ export default {
     },
     linkToList (name) {
       this.$router.push(name);
-      this.$emit('linkToList', name);
     }
   }
 }
