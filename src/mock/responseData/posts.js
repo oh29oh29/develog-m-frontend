@@ -21,7 +21,13 @@ const title1Posts = new Array(totalPosts[0], totalPosts[1], totalPosts[2], total
 const title2Posts = new Array(totalPosts[4], totalPosts[5], totalPosts[6], totalPosts[7]);
 const title3Posts = new Array(totalPosts[8], totalPosts[9], totalPosts[10], totalPosts[11]);
 const title4Posts = new Array(totalPosts[12], totalPosts[13], totalPosts[14], totalPosts[15]);
+const title1Post1 = totalPosts[0];
 
 export {
-  totalPosts, title1Posts, title2Posts, title3Posts, title4Posts
+  totalPosts,
+  title1Posts,
+  title2Posts,
+  title3Posts,
+  title4Posts,
+  title1Post1
 }

@@ -5,6 +5,7 @@ import { title1Posts } from "./responseData/posts";
 import { title2Posts } from "./responseData/posts";
 import { title3Posts } from "./responseData/posts";
 import { title4Posts } from "./responseData/posts";
+import { title1Post1 } from "./responseData/posts";
 
 export class MockContainer {
     constructor (axios) {
@@ -21,6 +22,7 @@ export class MockContainer {
         this.mock.onGet('/title2').reply(200, title2Posts);
         this.mock.onGet('/title3').reply(200, title3Posts);
         this.mock.onGet('/title4').reply(200, title4Posts);
+        this.mock.onGet('/title1/category-title1 post-title1').reply(200, title1Post1);
         this.mock.onGet(new RegExp(`/*`)).reply(200, totalPosts);
     }
 }

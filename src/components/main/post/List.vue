@@ -1,6 +1,6 @@
 <template>
   <section class="post-list-wrap">
-    <article class="post" v-for="post in posts" v-bind:key="post.id">
+    <article class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title)">
       <span class="title">{{ post.title }}</span>
       <span class="regDate">{{ post.regDate }}</span>
       <p class="description">{{ post.description }}</p>
@@ -11,7 +11,6 @@
 <script>
 export default {
   name: 'List',
-  props: ['categoryName'],
   data () {
     return {
       posts: []
@@ -20,8 +19,10 @@ export default {
   created () {
     this.fetchData('');
   },
-  updated () {
-    this.fetchData(this.categoryName);
+  watch: {
+    '$route' () {
+      this.fetchData(this.$route.params.categoryName);
+    }
   },
   methods: {
     fetchData (categoryName) {
@@ -31,6 +32,9 @@ export default {
           console.log(response);
           _this.posts = response.data;
         });
+    },
+    linkToDetail (title) {
+      this.$router.push(this.$route.params.categoryName + '/' + title);
     }
   }
 }
