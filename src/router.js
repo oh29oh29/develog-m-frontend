@@ -2,11 +2,11 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import MHome from './components/main/Home';
-import MPostList from './components/main/post/List';
-import MPostDetail from './components/main/post/Detail';
 import MSignIn from './components/main/member/SignIn';
 import MSignUp from './components/main/member/SignUp';
 import MCategory from './components/main/post/Category';
+import MPostList from './components/main/post/List';
+import MPostDetail from './components/main/post/Detail';
 
 import AHome from './components/admin/Home';
 import ACategory from './components/admin/Category';
@@ -22,12 +22,12 @@ export default new Router({
       component: MHome,
       children: [
         {
-            path: '',
-            name: 'list',
-            components: {
-                category: MCategory,
-                default: MPostList
-            }
+          path: '',
+          name: 'list',
+          components: {
+            category: MCategory,
+            default: MPostList
+          }
         },
         {
           path: 'sign-in',

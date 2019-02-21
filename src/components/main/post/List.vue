@@ -52,6 +52,9 @@ export default {
   font-size: 16px;
   margin: 0 20px;
 }
+.post:first-child {
+  padding-top: 10px;
+}
 .post {
   font-size: 20px;
   padding: 40px 20px;

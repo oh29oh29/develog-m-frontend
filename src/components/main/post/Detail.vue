@@ -35,13 +35,20 @@ export default {
 
 <style scoped>
 .post-detail-wrap {
-  width: 680px;
+  width: 820px;
   margin: 0 auto;
 }
 .title {
   font-size: 26px;
+  padding: 0 20px;
 }
 .contents {
   margin: 50px 0;
+  padding: 20px 20px;
+  border-left: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>
