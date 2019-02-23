@@ -1,10 +1,20 @@
 <template>
   <section class="post-list-wrap">
-    <article class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title)">
-      <span class="category">title1</span>
-      <span class="title">{{ post.title }}</span>
-      <span class="regDate">{{ post.regDate }}</span>
-      <p class="description">{{ post.description }}</p>
+    <article v-if="posts.length > 0">
+      <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title)">
+        <span class="category">title1</span>
+        <span class="title">{{ post.title }}</span>
+        <span class="regDate">{{ post.regDate }}</span>
+        <p class="description">{{ post.description }}</p>
+      </div>
+      <div class="paging">
+
+      </div>
+    </article>
+    <article v-else>
+      <div class="post-empty">
+        <span class="empty-text">작성된 포스트가 없습니다.</span>
+      </div>
     </article>
   </section>
 </template>
@@ -27,7 +37,7 @@ export default {
   },
   methods: {
     fetchData (categoryName) {
-      if (categoryName === undefined) {
+      if (!categoryName) {
         categoryName = '';
       }
 
@@ -59,9 +69,14 @@ export default {
   font-size: 20px;
   padding: 40px 20px;
   border-bottom: 1px solid black;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+}
+.post-empty {
+  font-size: 20px;
+  padding: 80px 20px;
+  text-align: center;
+}
+.empty-text {
+
 }
 .category {
   display: block;

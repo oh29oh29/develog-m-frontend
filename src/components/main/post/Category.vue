@@ -2,8 +2,10 @@
   <nav class="category-wrap">
     <span class="header-ko">카테고리</span><span class="header-en">categories</span>
     <div class="category" v-for="(category) in categories" v-bind:key="category.id">
-      <span class="name" v-on:click="linkToList(category.name)">{{ category.name }}</span>
-      <span v-show="isSelected(category.name)" class="active">●</span>
+      <div v-if="category.isVisible === '1'">
+        <span class="name" v-on:click="linkToList(category.name)">{{ category.name }}</span>
+        <span v-show="isSelected(category.name)" class="active">●</span>
+      </div>
     </div>
   </nav>
 </template>
@@ -19,6 +21,7 @@ export default {
   },
   created () {
     this.fetchData();
+    this.selectedName = this.$route.params.categoryName;
   },
   watch: {
     '$route' () {
@@ -53,9 +56,6 @@ export default {
   font-size: 16px;
   padding: 0 10px;
   border-radius: 10px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .header-ko {
   display: inline-block;
@@ -78,5 +78,6 @@ export default {
 .active {
   vertical-align: sub;
   margin: 0 0 0 5px;
+  font-size: 12px;
 }
 </style>

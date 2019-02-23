@@ -47,8 +47,5 @@ export default {
   padding: 20px 20px;
   border-left: 1px solid #e4e4e4;
   border-right: 1px solid #e4e4e4;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 </style>
