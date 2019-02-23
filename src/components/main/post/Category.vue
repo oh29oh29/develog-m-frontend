@@ -1,8 +1,9 @@
 <template>
   <nav class="category-wrap">
     <span class="header-ko">카테고리</span><span class="header-en">categories</span>
-    <div class="category" v-for="category in categories" v-bind:key="category.id" v-bind:class="{ active: isSelected[category.name]}">
+    <div class="category" v-for="(category) in categories" v-bind:key="category.id">
       <span class="name" v-on:click="linkToList(category.name)">{{ category.name }}</span>
+      <span v-show="isSelected(category.name)" class="active">●</span>
     </div>
   </nav>
 </template>
@@ -13,7 +14,7 @@ export default {
   data () {
     return {
       categories: [],
-      isSelected: {}
+      selectedName: ''
     }
   },
   created () {
@@ -21,12 +22,7 @@ export default {
   },
   watch: {
     '$route' () {
-      for (const categoryName in this.isSelected) {
-        if (this.isSelected.hasOwnProperty(categoryName) && this.isSelected[categoryName]) {
-          this.isSelected[categoryName] = false;
-        }
-      }
-      this.isSelected[this.$route.params.categoryName] = true;
+      this.selectedName = this.$route.params.categoryName;
     }
   },
   methods: {
@@ -36,13 +32,13 @@ export default {
         .then(response => {
           console.log(response);
           _this.categories = response.data;
-          _this.categories.forEach(category => {
-            _this.isSelected[category.name] = false;
-          })
         });
     },
     linkToList (name) {
       this.$router.push(name);
+    },
+    isSelected (name) {
+      return name === this.selectedName;
     }
   }
 }
@@ -80,6 +76,7 @@ export default {
   display: inline-block;
 }
 .active {
-  background-color: red;
+  vertical-align: sub;
+  margin: 0 0 0 5px;
 }
 </style>
