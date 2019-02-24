@@ -1,7 +1,7 @@
 <template>
   <section class="post-list-wrap">
     <article v-if="posts.length > 0">
-      <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title)">
+      <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title, post.id)">
         <span class="category">title1</span>
         <span class="title">{{ post.title }}</span>
         <span class="regDate">{{ post.regDate }}</span>
@@ -48,8 +48,16 @@ export default {
           _this.posts = response.data;
         });
     },
-    linkToDetail (title) {
-      this.$router.push(this.$route.params.categoryName + '/' + title);
+    linkToDetail (postTitle, postId) {
+      this.$router.push({
+        name: 'detail',
+        params: {
+          categoryName: this.$route.params.categoryName,
+          page: this.$route.params.page,
+          postTitle: postTitle,
+          postId: postId
+        }
+      });
     }
   }
 }

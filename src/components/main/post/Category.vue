@@ -38,7 +38,7 @@ export default {
         });
     },
     linkToList (name) {
-      this.$router.push(name);
+      this.$router.push(name + '/1');
     },
     isSelected (name) {
       return name === this.selectedName;

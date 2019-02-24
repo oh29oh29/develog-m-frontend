@@ -40,7 +40,7 @@ const postMockData4 = [
 
 const postMockData5 = [];
 
-const postTotalMockData = [postMockData1, postMockData2, postMockData3, postMockData4, postMockData5];
+const postTotalMockData = [].concat(postMockData1, postMockData2, postMockData3, postMockData4, postMockData5);
 
 
 export const postMockData = {

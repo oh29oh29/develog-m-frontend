@@ -23,7 +23,8 @@ export default {
   methods: {
     fetchData () {
       const _this = this;
-      this.$http.get('/' + this.$route.params.categoryName + '/' + this.$route.params.postTitle)
+      console.log(this.$route.params.postId);
+      this.$http.get('/' + this.$route.params.categoryName + '/' + this.$route.params.postId)
         .then(response => {
           console.log(response);
           _this.post = response.data;

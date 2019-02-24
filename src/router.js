@@ -40,7 +40,7 @@ export default new Router({
           component: MSignUp
         },
         {
-          path: ':categoryName',
+          path: ':categoryName/:page',
           name: 'list2',
           components: {
             category: MCategory,
@@ -48,7 +48,7 @@ export default new Router({
           }
         },
         {
-          path: ':categoryName/:postTitle',
+          path: ':categoryName/:page/:postTitle',
           name: 'detail',
           components: {
             default: MPostDetail
