@@ -8,7 +8,13 @@
         <p class="description">{{ post.description }}</p>
       </div>
       <div class="paging">
-
+        <span class="page-btn">←︎</span>
+        <span class="page-btn">1</span>
+        <span class="page-btn">2</span>
+        <span class="page-btn page-active-btn">3</span>
+        <span class="page-btn">4</span>
+        <span class="page-btn">5</span>
+        <span class="page-btn">→</span>
       </div>
     </article>
     <article v-else>
@@ -28,21 +34,25 @@ export default {
     }
   },
   created () {
-    this.fetchData(this.$route.params.categoryName);
+    this.fetchData(this.$route.params.categoryName, this.$route.params.page);
   },
   watch: {
     '$route' () {
-      this.fetchData(this.$route.params.categoryName);
+      this.fetchData(this.$route.params.categoryName, this.$route.params.page);
     }
   },
   methods: {
-    fetchData (categoryName) {
+    fetchData (categoryName, page) {
       if (!categoryName) {
         categoryName = '';
       }
 
+      if (!page) {
+        page = 1;
+      }
+
       const _this = this;
-      this.$http.get('/' + categoryName)
+      this.$http.get('/' + categoryName + '/' + page)
         .then(response => {
           console.log(response);
           _this.posts = response.data;
@@ -105,5 +115,20 @@ export default {
 .description {
   width: 540px;
   margin: 20px 0 0 0;
+}
+.paging {
+  margin: 30px;
+  text-align: center;
+}
+.page-btn {
+  display: inline-block;
+  width: 30px;
+  line-height: 30px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.page-active-btn {
+  border-bottom: 1px solid black;
+  cursor: default;
 }
 </style>
