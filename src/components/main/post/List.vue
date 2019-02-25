@@ -9,8 +9,8 @@
       </div>
       <div class="paging">
         <span class="page-btn">←︎</span>
-        <span class="page-btn">1</span>
-        <span class="page-btn">2</span>
+        <span class="page-btn" v-on:click="linkToPage(1)">1</span>
+        <span class="page-btn" v-on:click="linkToPage(2)">2</span>
         <span class="page-btn page-active-btn">3</span>
         <span class="page-btn">4</span>
         <span class="page-btn">5</span>
@@ -68,6 +68,9 @@ export default {
           postId: postId
         }
       });
+    },
+    linkToPage (page) {
+      this.$router.push('/' + this.$route.params.categoryName + '/' + page);
     }
   }
 }

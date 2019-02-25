@@ -14,6 +14,7 @@ export class MockContainer {
     this.mock.onPatch('/category').reply(200);
     this.mock.onDelete('/category').reply(200);
     this.mock.onGet('/JAVA/1').reply(200, postMockData.postMockData1);
+    this.mock.onGet('/JAVA/2').reply(200, postMockData.postMockData2);
     this.mock.onGet('/Spring 프레임워크').reply(200, postMockData.postMockData2);
     this.mock.onGet('/JavaScript').reply(200, postMockData.postMockData3);
     this.mock.onGet('/Vuejs').reply(200, postMockData.postMockData4);
