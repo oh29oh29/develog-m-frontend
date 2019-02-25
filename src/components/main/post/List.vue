@@ -8,13 +8,9 @@
         <p class="description">{{ post.description }}</p>
       </div>
       <div class="paging">
-        <span class="page-btn">←︎</span>
-        <span class="page-btn" v-on:click="linkToPage(1)">1</span>
-        <span class="page-btn" v-on:click="linkToPage(2)">2</span>
-        <span class="page-btn page-active-btn">3</span>
-        <span class="page-btn">4</span>
-        <span class="page-btn">5</span>
-        <span class="page-btn">→</span>
+        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledPrevBtn }" v-on:click="linkToPrev">←︎</span>
+        <span v-for="i in pages" class="page-btn" v-bind:class="{ 'page-active-btn': i === page.target }" v-on:click="linkToPage(i)">{{ i }}</span>
+        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisalbedNextBtn }" v-on:click="linkToNext">→</span>
       </div>
     </article>
     <article v-else>
@@ -30,7 +26,15 @@ export default {
   name: 'List',
   data () {
     return {
-      posts: []
+      posts: [],
+      page: {
+        total: 11,
+        start: 1,
+        end: 5,
+        target: 1
+      },
+      isDisabledPrev: false,
+      isDisabledNext: false
     }
   },
   created () {
@@ -39,6 +43,24 @@ export default {
   watch: {
     '$route' () {
       this.fetchData(this.$route.params.categoryName, this.$route.params.page);
+      this.page.target = parseInt(this.$route.params.page);
+    }
+  },
+  computed: {
+    isDisabledPrevBtn () {
+      this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
+      return this.isDisabledPrev;
+    },
+    isDisalbedNextBtn () {
+      this.isDisabledNext = this.page.total - (this.page.total % 5) < this.page.target;
+      return this.isDisabledNext;
+    },
+    pages () {
+      let blockPages = [];
+      for (let i = this.page.start; i <= this.page.end; i++) {
+        blockPages.push(i);
+      }
+      return blockPages;
     }
   },
   methods: {
@@ -71,6 +93,22 @@ export default {
     },
     linkToPage (page) {
       this.$router.push('/' + this.$route.params.categoryName + '/' + page);
+    },
+    linkToPrev () {
+      if (this.isDisabledPrev) {
+        return;
+      }
+
+      let target = this.page.start - 1;
+      this.$router.push('/' + this.$route.params.categoryName + '/' + target);
+    },
+    linkToNext () {
+      if (this.isDisabledNext) {
+        return;
+      }
+
+      let target = this.page.end + 1;
+      this.$router.push('/' + this.$route.params.categoryName + '/' + target);
     }
   }
 }
@@ -132,6 +170,10 @@ export default {
 }
 .page-active-btn {
   border-bottom: 1px solid black;
+  cursor: default;
+}
+.page-disabled-btn {
+  color: #eaeaea;
   cursor: default;
 }
 </style>
