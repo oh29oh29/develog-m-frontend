@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import MHome from './components/main/Home';
+import MIntro from './components/main/Intro';
 import MSignIn from './components/main/member/SignIn';
 import MSignUp from './components/main/member/SignUp';
 import MCategory from './components/main/post/Category';
@@ -23,10 +24,10 @@ export default new Router({
       children: [
         {
           path: '',
-          name: 'list',
+          name: 'intro',
           components: {
             category: MCategory,
-            default: MPostList
+            default: MIntro
           }
         },
         {
@@ -50,9 +51,7 @@ export default new Router({
         {
           path: ':categoryName/:page/:postTitle',
           name: 'detail',
-          components: {
-            default: MPostDetail
-          }
+          component: MPostDetail
         }
       ]
     },
