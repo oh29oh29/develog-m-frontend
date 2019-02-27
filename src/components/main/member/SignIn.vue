@@ -44,7 +44,7 @@ export default {
   text-align: center;
 }
 .sign-in-box {
-  width: 466px;
+  width: 500px;
   line-height: 40px;
   font-size: 16px;
 }

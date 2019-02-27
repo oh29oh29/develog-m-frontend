@@ -93,12 +93,12 @@ export default {
   font-size: 16px;
 }
 .input-text {
-  width: 468px;
+  width: 500px;
   padding: 0 15px;
   border: 1px solid #000;
 }
 .input-short-text {
-  width: 389px;
+  width: 420px;
   vertical-align: middle;
   border: 0;
   border-top: 1px solid #000;
