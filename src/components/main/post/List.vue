@@ -8,9 +8,9 @@
         <p class="description">{{ post.description }}</p>
       </div>
       <div class="paging">
-        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledPrevBtn }" v-on:click="linkToPrev">←︎</span>
-        <span v-for="i in pages" class="page-btn" v-bind:class="{ 'page-active-btn': i === page.target }" v-on:click="linkToPage(i)">{{ i }}</span>
-        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisalbedNextBtn }" v-on:click="linkToNext">→</span>
+        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledPrev }" v-on:click="linkToPrev">←︎</span>
+        <span v-for="i in pages" v-bind:key="i" class="page-btn" v-bind:class="{ 'page-active-btn': i === page.target }" v-on:click="linkToPage(i)">{{ i }}</span>
+        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledNext }" v-on:click="linkToNext">→</span>
       </div>
     </article>
     <article v-else>
@@ -34,7 +34,8 @@ export default {
         target: 1
       },
       isDisabledPrev: false,
-      isDisabledNext: false
+      isDisabledNext: false,
+      categoryName: ''
     }
   },
   created () {
@@ -43,20 +44,11 @@ export default {
   watch: {
     '$route' () {
       this.fetchData(this.$route.params.categoryName, this.$route.params.page);
-      this.page.target = parseInt(this.$route.params.page);
     }
   },
   computed: {
-    isDisabledPrevBtn () {
-      this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
-      return this.isDisabledPrev;
-    },
-    isDisalbedNextBtn () {
-      this.isDisabledNext = this.page.total - (this.page.total % 5) < this.page.target;
-      return this.isDisabledNext;
-    },
     pages () {
-      let blockPages = [];
+      const blockPages = [];
       for (let i = this.page.start; i <= this.page.end; i++) {
         blockPages.push(i);
       }
@@ -64,51 +56,52 @@ export default {
     }
   },
   methods: {
+    // 데이터 갱신
     fetchData (categoryName, page) {
-      if (!categoryName) {
-        categoryName = '';
-      }
-
-      if (!page) {
-        page = 1;
-      }
-
       const _this = this;
       this.$http.get('/' + categoryName + '/' + page)
         .then(response => {
           console.log(response);
-          _this.posts = response.data;
+          _this.posts = response.data.posts;
+          _this.page = response.data.page;
+          _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
+          _this.isDisabledNext = this.page.end === this.page.total;
+          _this.categoryName = categoryName;
         });
     },
+    // 상세보기 이동
     linkToDetail (postTitle, postId) {
       this.$router.push({
         name: 'detail',
         params: {
-          categoryName: this.$route.params.categoryName,
-          page: this.$route.params.page,
+          categoryName: this.categoryName,
+          page: this.page.target,
           postTitle: postTitle,
           postId: postId
         }
       });
     },
+    // 페이지 이동
     linkToPage (page) {
-      this.$router.push('/' + this.$route.params.categoryName + '/' + page);
+      this.$router.push('/' + this.categoryName + '/' + page);
     },
+    // 이전 블럭 이동
     linkToPrev () {
       if (this.isDisabledPrev) {
         return;
       }
 
       let target = this.page.start - 1;
-      this.$router.push('/' + this.$route.params.categoryName + '/' + target);
+      this.$router.push('/' + this.categoryName + '/' + target);
     },
+    // 다음 블럭 이동
     linkToNext () {
       if (this.isDisabledNext) {
         return;
       }
 
       let target = this.page.end + 1;
-      this.$router.push('/' + this.$route.params.categoryName + '/' + target);
+      this.$router.push('/' + this.categoryName + '/' + target);
     }
   }
 }
