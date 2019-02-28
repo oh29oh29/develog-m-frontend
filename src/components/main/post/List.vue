@@ -4,7 +4,7 @@
       <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title, post.id)">
         <span class="category">title1</span>
         <span class="title">{{ post.title }}</span>
-        <span class="regDate">{{ post.regDate }}</span>
+        <span class="reg-date">{{ post.regDate }}</span>
         <p class="description">{{ post.description }}</p>
       </div>
       <div class="paging">
@@ -133,12 +133,12 @@ export default {
 .category {
   display: block;
   font-size: 16px;
-  color: #aaaaaa;
+  color: #bdbdbd;
 }
 .title {
 
 }
-.regDate {
+.reg-date {
   font-size: 16px;
   float: right;
   width: 100px;

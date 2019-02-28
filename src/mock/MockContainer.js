@@ -1,6 +1,7 @@
 import MockAdapter from "axios-mock-adapter";
-import { categories } from "./responseData/categories";
-import { postMockData } from "./responseData/posts";
+import { categories } from "./data/categories";
+import { postMockData } from "./data/posts";
+import { commentMockData } from "./data/comments";
 
 export class MockContainer {
   constructor (axios) {
@@ -71,7 +72,10 @@ export class MockContainer {
     this.mock.onGet('/JavaScript').reply(200, postMockData.postMockData3);
     this.mock.onGet('/Vuejs').reply(200, postMockData.postMockData4);
     this.mock.onGet('/Tomcat').reply(200, postMockData.postMockData5);
-    this.mock.onGet('/JAVA/101').reply(200, postMockData.postMockData1[0][0]);
+    this.mock.onGet('/JAVA/101').reply(200, {
+      'post': postMockData.postMockData1[0][0],
+      'comments': commentMockData.commentMockData1
+    });
     this.mock.onGet(new RegExp(`/*`)).reply(200);
   }
 }
