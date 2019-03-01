@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { dateUtil } from '../../../assets/js/utils/dateUtil';
 export default {
   name: "Detail",
   data () {
@@ -42,7 +43,11 @@ export default {
         .then(response => {
           console.log(response);
           _this.post = response.data.post;
+          _this.post.regDate = dateUtil.convertStringToDate(_this.post.regDate);
           _this.comments = response.data.comments;
+          _this.comments.forEach(comment => {
+            comment.regDate = dateUtil.convertStringToDateTime(comment.regDate);
+          });
           _this.categoryName = categoryName;
         });
     }

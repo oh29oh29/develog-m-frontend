@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { dateUtil } from '../../../assets/js/utils/dateUtil';
 export default {
   name: 'List',
   data () {
@@ -63,6 +64,9 @@ export default {
         .then(response => {
           console.log(response);
           _this.posts = response.data.posts;
+          _this.posts.forEach(post => {
+            post.regDate = dateUtil.convertStringToDate(post.regDate);
+          });
           _this.page = response.data.page;
           _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
           _this.isDisabledNext = this.page.end === this.page.total;

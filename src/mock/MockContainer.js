@@ -73,8 +73,8 @@ export class MockContainer {
     this.mock.onGet('/Vuejs').reply(200, postMockData.postMockData4);
     this.mock.onGet('/Tomcat').reply(200, postMockData.postMockData5);
     this.mock.onGet('/JAVA/101').reply(200, {
-      'post': postMockData.postMockData1[0][0],
-      'comments': commentMockData.commentMockData1
+      post: postMockData.postMockData1[0][0],
+      comments: commentMockData.commentMockData1
     });
     this.mock.onGet(new RegExp(`/*`)).reply(200);
   }
