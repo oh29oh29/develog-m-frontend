@@ -68,10 +68,10 @@ export class MockContainer {
         target: 6
       }
     });
-    this.mock.onGet('/Spring 프레임워크').reply(200, postMockData.postMockData2);
-    this.mock.onGet('/JavaScript').reply(200, postMockData.postMockData3);
-    this.mock.onGet('/Vuejs').reply(200, postMockData.postMockData4);
-    this.mock.onGet('/Tomcat').reply(200, postMockData.postMockData5);
+    this.mock.onGet('/Spring 프레임워크/1').reply(200, postMockData.postMockData2);
+    this.mock.onGet('/JavaScript/1').reply(200, postMockData.postMockData3);
+    this.mock.onGet('/Vuejs/1').reply(200, postMockData.postMockData4);
+    this.mock.onGet('/Tomcat/1').reply(200, postMockData.postMockData5);
     this.mock.onGet('/JAVA/101').reply(200, {
       post: postMockData.postMockData1[0][0],
       comments: commentMockData.commentMockData1
