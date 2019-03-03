@@ -15,6 +15,8 @@ const commentMockData1 = [
   { id: '111', postId: '1', memberId: 'oh29oh29', children: [], contents: '카테고리1의 포스트1의 댓글11', regDate: '20190131100000', lastUpdateDate: '20190201'}
 ];
 
+const commentEmptyMockData = [];
+
 export const commentMockData = {
-  commentMockData1
+  commentMockData1, commentEmptyMockData
 };

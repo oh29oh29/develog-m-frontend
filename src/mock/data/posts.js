@@ -73,11 +73,11 @@ const postMockData4 = [
   { id: '407', categoryId: '4', memberId: 'oh29oh29', title: '카테고리4의 포스트7', description: 'testDesc', contents: 'testContents', regDate: '20190131', lastUpdateDate: '20190201', views: '100', isPrivate: '0'},
 ];
 
-const postMockData5 = [];
+const postEmptyMockData = [];
 
-const postTotalMockData = [].concat(postMockData1, postMockData2, postMockData3, postMockData4, postMockData5);
+const postTotalMockData = [].concat(postMockData1, postMockData2, postMockData3, postMockData4, postEmptyMockData);
 
 
 export const postMockData = {
-  postMockData1, postMockData2, postMockData3, postMockData4, postMockData5, postTotalMockData
+  postMockData1, postMockData2, postMockData3, postMockData4, postEmptyMockData, postTotalMockData
 };

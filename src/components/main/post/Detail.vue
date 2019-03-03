@@ -13,30 +13,48 @@
       <!-- 포스트 영역 끝 -->
       <!-- 댓글 영역 시작 -->
       <div class="comments-wrap">
-        <!-- 댓글 시작 -->
-        <div class="comment" v-for="comment in comments" v-bind:key="comment.id">
-          <div class="comment-top">
-            <span class="comment-writer">{{ comment.memberId }}</span>
-            <span class="comment-reg-date">{{ comment.regDate }}</span>
-          </div>
-          <div class="comment-contents">{{ comment.contents }}</div>
-          <!-- 대댓글 시작 -->
-          <div class="child-comment" v-bind:class="{ 'child-comment-last': index === comment.children.length - 1 }" v-for="(childComment, index) in comment.children" v-bind:key="childComment.id">
-            <div class="comment-top">
-              <span class="comment-writer">{{ childComment.memberId }}</span>
-              <span class="comment-reg-date">{{ childComment.regDate }}</span>
+        <span class="comments-count">댓글 {{ comments.length ? comments.length : 0 }}</span>
+        <div class="comments-inner">
+          <!-- 댓글 시작 -->
+          <div v-if="comments.length > 0">
+            <div class="comment" v-for="comment in comments" v-bind:key="comment.id">
+              <div class="comment-top">
+                <span class="comment-writer">{{ comment.memberId }}</span>
+                <span class="comment-reg-date">{{ comment.regDate }}</span>
+                <button class="comment-reply-show-btn" v-on:click="showCommentReplyInput(comment.id)">댓글</button>
+              </div>
+              <div class="comment-contents">{{ comment.contents }}</div>
+              <!-- 대댓글 쓰기 시작 -->
+              <div class="comment-reply-write" v-if="showCommentReply === comment.id">
+                <textarea class="comment-input-text"></textarea>
+                <button class="comment-reply-input-btn" v-on:click="writeComment">등록</button>
+                <button class="comment-reply-cancel-btn" v-on:click="cancelReplyComment">취소</button>
+              </div>
+              <!-- 대댓글 쓰기 끝 -->
+              <!-- 대댓글 시작 -->
+              <div class="child-comment" v-bind:class="{ 'child-comment-last': index === comment.children.length - 1 }" v-for="(childComment, index) in comment.children" v-bind:key="childComment.id">
+                <div class="comment-top">
+                  <span class="comment-writer">{{ childComment.memberId }}</span>
+                  <span class="comment-reg-date">{{ childComment.regDate }}</span>
+                </div>
+                <div class="comment-contents">{{ childComment.contents }}</div>
+              </div>
+              <!-- 대댓글 끝 -->
             </div>
-            <div class="comment-contents">{{ childComment.contents }}</div>
           </div>
-          <!-- 대댓글 끝 -->
+          <div v-else>
+            <div class="comment-empty">
+              <span class="empty-text">작성된 댓글이 없습니다.</span>
+            </div>
+          </div>
+          <!-- 댓글 끝 -->
+          <!-- 댓글 쓰기 시작 -->
+          <div class="comment-write">
+            <textarea class="comment-input-text"></textarea>
+            <button class="comment-input-btn" v-on:click="writeComment">등록</button>
+          </div>
+          <!-- 댓글 쓰기 끝 -->
         </div>
-        <!-- 댓글 끝 -->
-        <!-- 댓글 쓰기 시작 -->
-        <div class="comment-write">
-          <textarea class="comment-input-text"></textarea>
-          <button class="comment-input-btn" v-on:click="writeComment">등록</button>
-        </div>
-        <!-- 댓글 쓰기 끝 -->
       </div>
       <!-- 댓글 영역 끝 -->
       <!-- 버튼 영역 시작 -->
@@ -56,16 +74,18 @@ export default {
     return {
       post: {},
       comments: {},
-      categoryName: ''
+      categoryName: '',
+      showCommentReply: ''
     }
   },
   created () {
     this.fetchData(this.$route.params.categoryName);
+    console.log("create finish");
   },
   methods: {
     fetchData (categoryName) {
       const _this = this;
-      this.$http.get('/' + categoryName + '/' + this.$route.params.postId)
+      this.$http.get('/' + categoryName + '/' + this.$route.params.postTitle)
         .then(response => {
           console.log(response);
           _this.post = response.data.post;
@@ -80,8 +100,14 @@ export default {
           _this.categoryName = categoryName;
         });
     },
-    writeComment () {
-
+    writeComment (parentCommentId) {
+      console.log(parentCommentId);
+    },
+    showCommentReplyInput (commentId) {
+      this.showCommentReply = commentId;
+    },
+    cancelReplyComment () {
+      this.showCommentReply = '';
     },
     linkToList () {
       this.$router.push('/' + this.categoryName + '/' + this.$route.params.page);
@@ -117,6 +143,12 @@ export default {
 .comments-wrap {
   margin: 20px 0;
   font-size: 13px;
+}
+.comments-count {
+  margin: 0 0 0 15px;
+}
+.comments-inner {
+  margin: 10px 0;
   background-color: #fafafa;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -134,7 +166,7 @@ export default {
 
 }
 .comment-writer {
-
+  font-weight: bold;
 }
 .comment-reg-date {
   margin: 0 0 0 10px;
@@ -142,6 +174,24 @@ export default {
 }
 .comment-contents {
   margin: 5px 0 0 0;
+}
+.comment-reply-show-btn {
+  float: right;
+  border: 0;
+  background: none;
+}
+.comment-reply-write {
+  margin: 15px 0 0 0;
+}
+.comment-reply-input-btn {
+  vertical-align: top;
+  width: 30px;
+  height: 50px;
+}
+.comment-reply-cancel-btn {
+  vertical-align: top;
+  width: 30px;
+  height: 50px;
 }
 .child-comment {
   margin: 15px;
@@ -173,5 +223,12 @@ export default {
   border: 0;
   font-size: 14px;
   margin: 0 20px 0 0px;
+}
+.comment-empty {
+  text-align: center;
+  padding: 30px 0 10px 0;
+}
+.empty-text {
+
 }
 </style>

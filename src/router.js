@@ -8,6 +8,7 @@ import MSignUp from './components/main/member/SignUp';
 import MCategory from './components/main/post/Category';
 import MPostList from './components/main/post/List';
 import MPostDetail from './components/main/post/Detail';
+import MPostWrite from './components/main/post/Write';
 
 import AHome from './components/admin/Home';
 import ACategory from './components/admin/Category';
@@ -17,6 +18,18 @@ Vue.use(Router);
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AHome,
+      children: [
+        {
+          path: 'category',
+          name: 'category',
+          component: ACategory
+        }
+      ]
+    },
     {
       path: '/',
       name: 'home',
@@ -35,10 +48,15 @@ export default new Router({
           name: 'signIn',
           component: MSignIn
         },
-          {
+        {
           path: 'sign-up',
           name: 'signUp',
           component: MSignUp
+        },
+        {
+          path: 'post',
+          name: 'post',
+          component: MPostWrite
         },
         {
           path: ':categoryName/:page',
@@ -52,18 +70,6 @@ export default new Router({
           path: ':categoryName/:page/:postTitle',
           name: 'detail',
           component: MPostDetail
-        }
-      ]
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: AHome,
-      children: [
-        {
-          path: 'category',
-          name: 'category',
-          component: ACategory
         }
       ]
     }
