@@ -1,15 +1,21 @@
 <template>
   <section class="post-write-wrap">
-    <div class="category-select-wrap">
-      <select class="category-select">
-        <option value="">Java</option>
-        <option value="">Spring 프레임워크</option>
-        <option value="">JavaScript</option>
-        <option value="">Vuejs</option>
-        <option value="">Tomcat</option>
-      </select>
+    <div class="row">
+      <div class="category-select-wrap">
+        <select class="category-select">
+          <option value="">Java</option>
+          <option value="">Spring 프레임워크</option>
+          <option value="">JavaScript</option>
+          <option value="">Vuejs</option>
+          <option value="">Tomcat</option>
+        </select>
+      </div>
+      <div class="private-wrap">
+        <span class="private-text">비공개</span>
+        <input type="checkbox" class="private-input">
+      </div>
     </div>
-    <div class="title-input-wrap">
+    <div class="row">
       <input type="text" class="title-input">
     </div>
     <editor
@@ -48,17 +54,30 @@ export default {
   width: 820px;
   margin: 0 auto;
 }
-.category-select-wrap {
+.row {
   margin: 10px 0;
   height: 30px;
+}
+.category-select-wrap {
+  display: inline-block;
+  height: 100%;
 }
 .category-select {
   width: 160px;
   height: 100%;
 }
-.title-input-wrap {
-  margin: 10px 0;
-  height: 30px;
+.private-wrap {
+  float: right;
+  height: 100%;
+  line-height: 30px;
+  cursor: pointer;
+}
+.private-text {
+  font-size: 13px;
+  margin: 0 5px 0 0;
+}
+.private-input {
+  cursor: pointer;
 }
 .title-input {
   width: 100%;
