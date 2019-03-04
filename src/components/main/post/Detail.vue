@@ -80,7 +80,6 @@ export default {
   },
   created () {
     this.fetchData(this.$route.params.categoryName);
-    console.log("create finish");
   },
   methods: {
     fetchData (categoryName) {

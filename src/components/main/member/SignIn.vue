@@ -1,16 +1,15 @@
 <template>
   <section>
     <div class="sign-in-wrap">
-      <form class="sign-in-form" method="post">
-        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+      <form class="sign-in-form">
         <div>
-          <input type="text" id="id" class="sign-in-box input-text input-id" name="id" placeholder="아이디">
+          <input type="text" id="id" class="sign-in-box input-text input-id" v-model="id" placeholder="아이디">
         </div>
         <div>
-          <input type="password" id="password" class="sign-in-box input-text" name="passwd" placeholder="비밀번호">
+          <input type="password" id="password" class="sign-in-box input-text" v-model="password" placeholder="비밀번호">
         </div>
         <div class="sign-in-ok-row">
-          <button id="submitBtn" class="sign-in-box submit-btn">로그인</button>
+          <button type="button" class="sign-in-box submit-btn" v-on:click="signIn">로그인</button>
         </div>
         <div class="sign-in-option-row">
           <router-link to="/search/id" class="option-link id-search-link">아이디 찾기</router-link>
@@ -24,7 +23,29 @@
 
 <script>
 export default {
-  name: 'SignIn'
+  name: 'SignIn',
+  data () {
+    return {
+      id: '',
+      password: ''
+    }
+  },
+  created () {
+
+  },
+  methods: {
+    signIn () {
+      const id = this.id;
+      const password = this.password;
+      this.$store.dispatch('SIGN_IN', { id, password })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+  }
 }
 </script>
 
