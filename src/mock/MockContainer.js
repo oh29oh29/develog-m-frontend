@@ -81,6 +81,8 @@ export class MockContainer {
       comments: commentMockData.commentEmptyMockData
     });
     this.mock.onGet('/sign-in').reply(200, {
+      id: 'testId',
+      name: 'test이름',
       accessToken: 'THIS_IS_ACCESS_TOKEN'
     });
     this.mock.onGet(new RegExp(`/*`)).reply(200);

@@ -6,11 +6,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    accessToken: {}
+    userInfo: {
+      id: '',
+      name: '',
+      accessToken: ''
+    }
   },
   mutations: {
-    SET_ACCESS_TOKEN (state, accessToken) {
-      state.accessToken = accessToken;
+    SET_USER_INFO (state, userInfo) {
+      state.userInfo = userInfo;
     }
   },
   // async
@@ -19,11 +23,14 @@ export default new Vuex.Store({
       axios.get('/sign-in', payload)
         .then(response => {
           console.log(response);
-          context.commit('SET_ACCESS_TOKEN', response.data.accessToken);
+          context.commit('SET_USER_INFO', {
+            id: response.data.id,
+            name: response.data.name,
+            accessToken: response.data.accessToken
+          });
 
           // 모든 HTTP 요청 헤더에 Authorization 을 추가한다.
           axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
-          console.log(axios.defaults.headers);
         })
         .catch(error => {
           console.log(error);
