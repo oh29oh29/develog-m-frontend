@@ -21,7 +21,7 @@
               <div class="comment-top">
                 <span class="comment-writer">{{ comment.memberId }}</span>
                 <span class="comment-reg-date">{{ comment.regDate }}</span>
-                <button class="comment-reply-show-btn" v-on:click="showCommentReplyInput(comment.id)">댓글</button>
+                <button class="comment-reply-show-btn" v-on:click="showCommentReplyInput(comment.id)" v-if="existUserInfo">댓글</button>
               </div>
               <div class="comment-contents">{{ comment.contents }}</div>
               <!-- 대댓글 쓰기 시작 -->
@@ -49,7 +49,7 @@
           </div>
           <!-- 댓글 끝 -->
           <!-- 댓글 쓰기 시작 -->
-          <div class="comment-write">
+          <div v-if="existUserInfo" class="comment-write">
             <textarea class="comment-input-text"></textarea>
             <button class="comment-input-btn" v-on:click="writeComment">등록</button>
           </div>
@@ -75,11 +75,18 @@ export default {
       post: {},
       comments: {},
       categoryName: '',
-      showCommentReply: ''
+      showCommentReply: '',
+      existUserInfo: this.$store.state.existUserInfo
     }
   },
   created () {
     this.fetchData(this.$route.params.categoryName);
+  },
+  watch: {
+    '$store' () {
+      this.existUserInfo = this.$store.state.existUserInfo;
+      console.log('store watch');
+    }
   },
   methods: {
     fetchData (categoryName) {

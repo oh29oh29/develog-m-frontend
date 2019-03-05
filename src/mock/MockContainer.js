@@ -82,9 +82,10 @@ export class MockContainer {
     });
     this.mock.onGet('/sign-in').reply(200, {
       id: 'testId',
-      name: 'test이름',
+      name: '권혁재',
       accessToken: 'THIS_IS_ACCESS_TOKEN'
     });
+    this.mock.onGet('/sign-out').reply(200);
     this.mock.onGet(new RegExp(`/*`)).reply(200);
   }
 }

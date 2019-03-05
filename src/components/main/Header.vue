@@ -7,14 +7,43 @@
       </router-link>
     </div>
     <div class="member-wrap">
-      <router-link to="/sign-in" class="sign-in-btn">로그인</router-link>
+      <div v-if="existUserInfo">
+        <span class="user-name">{{ userInfo.name }} 님</span>
+        <button class="sign-inout-btn" v-on:click="signOut">Sign out</button>
+      </div>
+      <router-link to="/sign-in" class="sign-inout-btn" v-else>Sign in</router-link>
     </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  data () {
+    return {
+      existUserInfo: false,
+      userInfo: {}
+    }
+  },
+  created () {
+    this.refreshUserInfo();
+  },
+  watch: {
+    '$route' () {
+      this.refreshUserInfo();
+    }
+  },
+  methods: {
+    refreshUserInfo () {
+      this.userInfo = this.$store.state.userInfo;
+      this.existUserInfo = Object.entries(this.userInfo).length > 0 && this.userInfo.id !== '' && this.userInfo.name !== '' && this.userInfo.accessToken !== '';
+    },
+    signOut () {
+      this.$store.dispatch('SIGN_OUT', () => {
+        this.$router.go(0);
+      });
+    }
+  }
 }
 </script>
 
@@ -45,9 +74,13 @@ header {
   line-height: 60px;
   margin: 0 20px 0 0;
 }
-.sign-in-btn {
-  width: 70px;
-  line-height: 23px;
+.sign-inout-btn {
   font-size: 12px;
+  padding: 8px 10px;
+  border: 1px solid #bdbdbd;
+}
+.user-name {
+  font-size: 13px;
+  margin: 0 10px 0 0;
 }
 </style>

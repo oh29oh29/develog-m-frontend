@@ -15,7 +15,10 @@ import Footer from './Footer';
 
 export default {
   name: 'Home',
-  components: { Header, Footer }
+  components: { Header, Footer },
+  created () {
+    this.$store.dispatch('REFRESH_CALLBACK');
+  }
 }
 </script>
 

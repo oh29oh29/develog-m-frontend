@@ -38,12 +38,15 @@ export default {
       const id = this.id;
       const password = this.password;
       this.$store.dispatch('SIGN_IN', { id, password })
-        .then(response => {
-          console.log(response)
+        .then(() => {
+          this.linkToHome();
         })
         .catch(error => {
           console.log(error);
         })
+    },
+    linkToHome () {
+      this.$router.push('/');
     }
   }
 }
