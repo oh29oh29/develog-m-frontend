@@ -14,14 +14,13 @@ export default new Vuex.Store({
       state.userInfo = userInfo;
 
       if (Object.keys(state.userInfo).length === 0) {
-        delete axios.defaults.headers.common['Authorization'];
         delete localStorage.userInfo;
+        delete axios.defaults.headers.common['Authorization'];
         state.existUserInfo = false;
       } else {
         localStorage.userInfo = JSON.stringify(userInfo);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${userInfo.accessToken}`; // 모든 HTTP 요청 헤더에 Authorization 을 추가한다.
         state.existUserInfo = true;
-        // 모든 HTTP 요청 헤더에 Authorization 을 추가한다.
-        axios.defaults.headers.common['Authorization'] = `Bearer ${userInfo.accessToken}`;
       }
     }
   },

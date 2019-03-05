@@ -2,30 +2,30 @@
   <section class="post-write-wrap">
     <div class="row">
       <div class="category-select-wrap">
-        <select class="category-select">
-          <option value="">Java</option>
-          <option value="">Spring 프레임워크</option>
-          <option value="">JavaScript</option>
-          <option value="">Vuejs</option>
-          <option value="">Tomcat</option>
+        <select class="category-select" v-model="post.categoryId">
+          <option value="" disabled selected hidden>Category</option>
+          <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{ category.name }}</option>
         </select>
       </div>
       <div class="private-wrap">
-        <span class="private-text">비공개</span>
-        <input type="checkbox" class="private-input">
+        <span class="private-text" v-on:click="post.isPrivate = !post.isPrivate">비공개</span>
+        <input type="checkbox" class="private-input" v-bind:checked="post.isPrivate" v-model="post.isPrivate">
       </div>
     </div>
     <div class="row">
-      <input type="text" class="title-input">
+      <input type="text" class="title-input" placeholder="Title" v-model="post.title">
+    </div>
+    <div class="row">
+      <textarea class="description-input" placeholder="Description" v-model="post.description"></textarea>
     </div>
     <editor
-        v-model="editorText"
+        v-model="post.contents"
         :options="editorOptions"
         height="500px"
         mode="wysiwyg"
     />
     <div class="btn-wrap">
-      <button class="write-btn">등록</button>
+      <button class="write-btn" v-on:click="submit">등록</button>
     </div>
   </section>
 </template>
@@ -41,9 +41,32 @@ export default {
   components: { Editor },
   data () {
     return {
-      editorText: 'This is initialValue.',
       editorOptions: {
+      },
+      categories: [],
+      post: {
+        categoryId: '',
+        title: '',
+        description: '',
+        contents: '',
+        isPrivate: false
       }
+    }
+  },
+  created () {
+    this.fetchCategories();
+  },
+  methods: {
+    fetchCategories () {
+      const _this = this;
+      this.$http.get('/category')
+        .then(response => {
+          console.log(response);
+          _this.categories = response.data;
+        });
+    },
+    submit () {
+
     }
   }
 }
@@ -56,7 +79,6 @@ export default {
 }
 .row {
   margin: 10px 0;
-  height: 30px;
 }
 .category-select-wrap {
   display: inline-block;
@@ -64,11 +86,11 @@ export default {
 }
 .category-select {
   width: 160px;
-  height: 100%;
+  height: 30px;
 }
 .private-wrap {
   float: right;
-  height: 100%;
+  height: 30px;
   line-height: 30px;
   cursor: pointer;
 }
@@ -81,9 +103,22 @@ export default {
 }
 .title-input {
   width: 100%;
-  height: 100%;
+  height: 30px;
   padding: 0 10px;
   font-size: 14px;
+}
+.title-input::placeholder {
+  color: #bdbdbd;
+}
+.description-input {
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  font-size: 14px;
+  resize: vertical;
+}
+.description-input::placeholder {
+  color: #bdbdbd;
 }
 .btn-wrap {
   margin: 40px 0;
