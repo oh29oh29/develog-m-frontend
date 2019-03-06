@@ -6,33 +6,34 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userInfo: {}, // keys : id, name, accessToken
-    existUserInfo: false
+    user: {}, // keys : id, name, role, accessToken
+    isSignedIn: false
   },
   mutations: {
-    SET_USER_INFO (state, userInfo) {
-      state.userInfo = userInfo;
+    SET_USER_INFO (state, user) {
+      state.user = user;
 
-      if (Object.keys(state.userInfo).length === 0) {
-        delete localStorage.userInfo;
+      if (Object.keys(state.user).length === 0) {
+        delete localStorage.user;
         delete axios.defaults.headers.common['Authorization'];
-        state.existUserInfo = false;
+        state.isSignedIn = false;
       } else {
-        localStorage.userInfo = JSON.stringify(userInfo);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${userInfo.accessToken}`; // 모든 HTTP 요청 헤더에 Authorization 을 추가한다.
-        state.existUserInfo = true;
+        localStorage.user = JSON.stringify(user);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${user.accessToken}`; // 모든 HTTP 요청 헤더에 Authorization 을 추가한다.
+        state.isSignedIn = true;
       }
     }
   },
   // async
   actions: {
     SIGN_IN (context, payload) {
-      axios.get('/sign-in', payload)
+      axios.get('/sign-in', { data: payload })
         .then(response => {
           console.log(response);
           context.commit('SET_USER_INFO', {
             id: response.data.id,
             name: response.data.name,
+            role: response.data.role,
             accessToken: response.data.accessToken
           });
         })
@@ -57,12 +58,11 @@ export default new Vuex.Store({
       context.commit('SET_USER_INFO', {});
     },
     REFRESH_CALLBACK (context) {
-      if (localStorage.hasOwnProperty('userInfo')) {
-        const userInfo = JSON.parse(localStorage.userInfo);
-        console.log(userInfo);
-        context.commit('SET_USER_INFO', userInfo);
+      if (localStorage.hasOwnProperty('user')) {
+        const user = JSON.parse(localStorage.user);
+        context.commit('SET_USER_INFO', user);
       } else {
-        console.log('not exist userInfo');
+        console.log('not exist user');
       }
     }
   }

@@ -1,21 +1,26 @@
 <template>
   <section class="post-list-wrap">
-    <article v-if="posts.length > 0">
-      <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title, post.id)">
-        <span class="category">title1</span>
-        <span class="title">{{ post.title }}</span>
-        <span class="reg-date">{{ post.regDate }}</span>
-        <p class="description">{{ post.description }}</p>
+    <article>
+      <div v-if="posts.length > 0">
+        <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title, post.id)">
+          <span class="category">title1</span>
+          <span class="title">{{ post.title }}</span>
+          <span class="reg-date">{{ post.regDate }}</span>
+          <p class="description">{{ post.description }}</p>
+        </div>
+        <div class="paging">
+          <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledPrev }" v-on:click="linkToPrev">←︎</span>
+          <span v-for="i in pages" v-bind:key="i" class="page-btn" v-bind:class="{ 'page-active-btn': i === page.target }" v-on:click="linkToPage(i)">{{ i }}</span>
+          <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledNext }" v-on:click="linkToNext">→</span>
+        </div>
       </div>
-      <div class="paging">
-        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledPrev }" v-on:click="linkToPrev">←︎</span>
-        <span v-for="i in pages" v-bind:key="i" class="page-btn" v-bind:class="{ 'page-active-btn': i === page.target }" v-on:click="linkToPage(i)">{{ i }}</span>
-        <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledNext }" v-on:click="linkToNext">→</span>
+      <div v-else>
+        <div class="post-empty">
+          <span class="empty-text">작성된 포스트가 없습니다.</span>
+        </div>
       </div>
-    </article>
-    <article v-else>
-      <div class="post-empty">
-        <span class="empty-text">작성된 포스트가 없습니다.</span>
+      <div class="post-management-btn-wrap" v-if="isSignedIn && user.role === 'ADMIN'">
+        <button class="post-write-btn" v-on:click="linkToWrite">글쓰기</button>
       </div>
     </article>
   </section>
@@ -36,7 +41,9 @@ export default {
       },
       isDisabledPrev: false,
       isDisabledNext: false,
-      categoryName: ''
+      categoryName: '',
+      user: this.$store.state.user,
+      isSignedIn: this.$store.state.isSignedIn
     }
   },
   created () {
@@ -67,9 +74,11 @@ export default {
           _this.posts.forEach(post => {
             post.regDate = dateUtil.convertStringToDate(post.regDate);
           });
-          _this.page = response.data.page;
-          _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
-          _this.isDisabledNext = this.page.end === this.page.total;
+          if (_this.posts.length > 0) {
+            _this.page = response.data.page;
+            _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
+            _this.isDisabledNext = this.page.end === this.page.total;
+          }
           _this.categoryName = categoryName;
         });
     },
@@ -106,6 +115,14 @@ export default {
 
       let target = this.page.end + 1;
       this.$router.push('/' + this.categoryName + '/' + target);
+    },
+    linkToWrite () {
+      this.$router.push({
+        name: 'post',
+        params: {
+          categoryName: this.categoryName
+        }
+      });
     }
   }
 }
@@ -172,5 +189,11 @@ export default {
 .page-disabled-btn {
   color: #eaeaea;
   cursor: default;
+}
+.post-management-btn-wrap {
+  text-align: right;
+}
+.post-write-btn {
+  padding: 10px 15px;
 }
 </style>

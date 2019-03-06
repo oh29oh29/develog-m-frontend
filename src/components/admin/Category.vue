@@ -7,7 +7,6 @@
       <span class="category-item category-visible">비공개</span>
     </div>
     <form id="test">
-      <!--<input type="hidden" id="csrf" th:data-header="${_csrf.headerName}" th:data-token="${_csrf.token}" />-->
       <div class="categoryList category-mng-wrap category-mng-body" v-for="(category, index) in categories" v-bind:key="category.id">
         <input type="hidden" class="categoryId" v-model="category.id"/>
         <input type="text" class="categoryName category-item category-name" v-model="category.name"/>

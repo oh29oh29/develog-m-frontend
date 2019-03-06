@@ -16,7 +16,9 @@ export default {
   data () {
     return {
       categories: [],
-      selectedName: ''
+      selectedName: '',
+      user: this.$store.state.user,
+      isSignedIn: this.$store.state.isSignedIn
     }
   },
   created () {

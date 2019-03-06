@@ -21,9 +21,23 @@
               <div class="comment-top">
                 <span class="comment-writer">{{ comment.memberId }}</span>
                 <span class="comment-reg-date">{{ comment.regDate }}</span>
-                <button class="comment-reply-show-btn" v-on:click="showCommentReplyInput(comment.id)" v-if="existUserInfo">댓글</button>
+                <button class="comment-control-btn" v-on:click="showCommentReplyInput(comment.id)" v-if="isSignedIn">댓글</button>
+                <button class="comment-control-btn comment-parent-modify-btn"
+                        v-on:click="deleteComment(comment.id)"
+                        v-if="comment.isDeleted === '0' && isSignedIn && comment.memberId === user.id">삭제</button>
+                <button class="comment-control-btn comment-parent-modify-btn"
+                        v-on:click="showCommentUpdateInput(comment.id)"
+                        v-if="comment.isDeleted === '0' && isSignedIn && comment.memberId === user.id">수정</button>
               </div>
-              <div class="comment-contents">{{ comment.contents }}</div>
+              <div class="comment-contents comment-deleted-contents" v-if="comment.isDeleted === '1'">삭제된 댓글입니다.</div>
+              <div class="comment-contents" v-else>
+                <div v-if="showCommentUpdate === comment.id">
+                  <textarea class="comment-input-text" v-bind:value="comment.contents"></textarea>
+                  <button class="comment-reply-input-btn" v-on:click="updateComment">등록</button>
+                  <button class="comment-reply-cancel-btn" v-on:click="cancelUpdateComment">취소</button>
+                </div>
+                <p v-else>{{ comment.contents }}</p>
+              </div>
               <!-- 대댓글 쓰기 시작 -->
               <div class="comment-reply-write" v-if="showCommentReply === comment.id">
                 <textarea class="comment-input-text"></textarea>
@@ -32,12 +46,29 @@
               </div>
               <!-- 대댓글 쓰기 끝 -->
               <!-- 대댓글 시작 -->
-              <div class="child-comment" v-bind:class="{ 'child-comment-last': index === comment.children.length - 1 }" v-for="(childComment, index) in comment.children" v-bind:key="childComment.id">
+              <div class="child-comment"
+                   v-bind:class="{ 'child-comment-last': index === comment.children.length - 1 }"
+                   v-for="(childComment, index) in comment.children"
+                   v-bind:key="childComment.id">
                 <div class="comment-top">
                   <span class="comment-writer">{{ childComment.memberId }}</span>
                   <span class="comment-reg-date">{{ childComment.regDate }}</span>
+                  <button class="comment-control-btn comment-child-delete-btn"
+                          v-on:click="deleteComment(childComment.id)"
+                          v-if="childComment.isDeleted === '0' && isSignedIn && childComment.memberId === user.id">삭제</button>
+                  <button class="comment-control-btn comment-child-modify-btn"
+                          v-on:click="showCommentUpdateInput(childComment.id)"
+                          v-if="childComment.isDeleted === '0' && isSignedIn && childComment.memberId === user.id">수정</button>
                 </div>
-                <div class="comment-contents">{{ childComment.contents }}</div>
+                <div class="comment-contents comment-deleted-contents" v-if="childComment.isDeleted === '1'">삭제된 댓글입니다.</div>
+                <div class="comment-contents" v-else>
+                  <div v-if="showCommentUpdate === childComment.id">
+                    <textarea class="comment-input-text comment-reply-update-text" v-bind:value="childComment.contents"></textarea>
+                    <button class="comment-reply-input-btn" v-on:click="updateComment">등록</button>
+                    <button class="comment-reply-cancel-btn" v-on:click="cancelUpdateComment">취소</button>
+                  </div>
+                  <p v-else>{{ childComment.contents }}</p>
+                </div>
               </div>
               <!-- 대댓글 끝 -->
             </div>
@@ -49,7 +80,7 @@
           </div>
           <!-- 댓글 끝 -->
           <!-- 댓글 쓰기 시작 -->
-          <div v-if="existUserInfo" class="comment-write">
+          <div v-if="isSignedIn" class="comment-write">
             <textarea class="comment-input-text"></textarea>
             <button class="comment-input-btn" v-on:click="writeComment">등록</button>
           </div>
@@ -76,7 +107,11 @@ export default {
       comments: {},
       categoryName: '',
       showCommentReply: '',
-      existUserInfo: this.$store.state.existUserInfo
+      showCommentUpdate: '',
+      user: {
+        id: this.$store.state.user.id
+      },
+      isSignedIn: this.$store.state.isSignedIn
     }
   },
   created () {
@@ -84,8 +119,7 @@ export default {
   },
   watch: {
     '$store' () {
-      this.existUserInfo = this.$store.state.existUserInfo;
-      console.log('store watch');
+      this.isSignedIn = this.$store.state.isSignedIn;
     }
   },
   methods: {
@@ -104,16 +138,45 @@ export default {
             })
           });
           _this.categoryName = categoryName;
+        })
+        .catch(error => {
+          console.log(error);
         });
     },
+    // 댓글 쓰기
     writeComment (parentCommentId) {
       console.log(parentCommentId);
     },
+    // 댓글 수정
+    updateComment () {
+
+    },
+    // 댓글 삭제
+    deleteComment (commentId) {
+      this.$http.delete('/comment/' + commentId)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 대댓글 입력란 보여주기
     showCommentReplyInput (commentId) {
       this.showCommentReply = commentId;
+      this.cancelUpdateComment();
     },
+    // 댓글 수정 입력란 보여주기
+    showCommentUpdateInput (commentId) {
+      this.showCommentUpdate = commentId;
+      this.cancelReplyComment();
+    },
+    // 댓글 작성 취소
     cancelReplyComment () {
       this.showCommentReply = '';
+    },
+    cancelUpdateComment () {
+      this.showCommentUpdate = '';
     },
     linkToList () {
       this.$router.push('/' + this.categoryName + '/' + this.$route.params.page);
@@ -181,10 +244,22 @@ export default {
 .comment-contents {
   margin: 5px 0 0 0;
 }
-.comment-reply-show-btn {
+.comment-deleted-contents {
+  color: #999999;
+}
+.comment-control-btn {
   float: right;
   border: 0;
   background: none;
+}
+.comment-parent-modify-btn {
+  margin: 0 5px 0 0;
+}
+.comment-child-modify-btn {
+  margin: 0 5px 0 0;
+}
+.comment-child-delete-btn {
+  margin: 0;
 }
 .comment-reply-write {
   margin: 15px 0 0 0;
@@ -200,7 +275,7 @@ export default {
   height: 50px;
 }
 .child-comment {
-  margin: 15px;
+  margin: 15px 0 15px 15px;
 }
 .child-comment-last {
   margin-bottom: 0;
@@ -216,6 +291,9 @@ export default {
   resize: vertical;
   height: 50px;
   min-height: 50px;
+}
+.comment-reply-update-text {
+  width: 705px;
 }
 .comment-input-btn {
   width: 60px;

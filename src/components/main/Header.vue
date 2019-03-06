@@ -7,8 +7,8 @@
       </router-link>
     </div>
     <div class="member-wrap">
-      <div v-if="existUserInfo">
-        <span class="user-name">{{ userInfo.name }} 님</span>
+      <div v-if="isSignedIn">
+        <span class="user-name">{{ user.name }} 님</span>
         <button class="sign-inout-btn" v-on:click="signOut">Sign out</button>
       </div>
       <router-link to="/sign-in" class="sign-inout-btn" v-else>Sign in</router-link>
@@ -21,8 +21,8 @@ export default {
   name: 'Header',
   data () {
     return {
-      existUserInfo: false,
-      userInfo: {}
+      user: {},
+      isSignedIn: false,
     }
   },
   created () {
@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     refreshUserInfo () {
-      this.userInfo = this.$store.state.userInfo;
-      this.existUserInfo = Object.entries(this.userInfo).length > 0 && this.userInfo.id !== '' && this.userInfo.name !== '' && this.userInfo.accessToken !== '';
+      this.user = this.$store.state.user;
+      this.isSignedIn = this.$store.state.isSignedIn;
     },
     signOut () {
       this.$store.dispatch('SIGN_OUT', () => {

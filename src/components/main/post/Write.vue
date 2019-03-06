@@ -3,7 +3,6 @@
     <div class="row">
       <div class="category-select-wrap">
         <select class="category-select" v-model="post.categoryId">
-          <option value="" disabled selected hidden>Category</option>
           <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{ category.name }}</option>
         </select>
       </div>
@@ -59,14 +58,30 @@ export default {
   methods: {
     fetchCategories () {
       const _this = this;
+      const categoryName = this.$route.params.categoryName;
       this.$http.get('/category')
         .then(response => {
           console.log(response);
           _this.categories = response.data;
+          _this.categories.every(category => {
+            if (category.name === categoryName) {
+              _this.post.categoryId = category.id;
+              return false;
+            }
+            return true;
+          })
         });
     },
     submit () {
-
+      const _this = this;
+      this.$http.post('/post', this.post)
+        .then(response => {
+          console.log(response);
+          _this.$router.push('/' + response.data.categoryName + '/1');
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
   }
 }
