@@ -3,7 +3,7 @@
     <article>
       <div v-if="posts.length > 0">
         <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title, post.id)">
-          <span class="category">title1</span>
+          <span class="private" v-if="post.isPrivate">비공개</span>
           <span class="title">{{ post.title }}</span>
           <span class="reg-date">{{ post.regDate }}</span>
           <p class="description">{{ post.description }}</p>
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { dateUtil } from '../../../assets/js/utils/dateUtil';
 export default {
   name: 'List',
   data () {
@@ -71,9 +70,6 @@ export default {
         .then(response => {
           console.log(response);
           _this.posts = response.data.posts;
-          _this.posts.forEach(post => {
-            post.regDate = dateUtil.convertStringToDate(post.regDate);
-          });
           if (_this.posts.length > 0) {
             _this.page = response.data.page;
             _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
@@ -151,7 +147,7 @@ export default {
 .empty-text {
 
 }
-.category {
+.private {
   display: block;
   font-size: 16px;
   color: #bdbdbd;

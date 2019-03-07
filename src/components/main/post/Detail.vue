@@ -3,7 +3,8 @@
     <article>
       <!-- 포스트 영역 시작 -->
       <div class="post-top">
-        <span class="category">{{ categoryName }}</span>
+        <span class="category">{{ post.categoryName }}</span>
+        <span class="private" v-if="post.isPrivate">비공개</span>
         <span class="reg-date">{{ post.regDate }}</span>
       </div>
       <span class="title">{{ post.title }}</span>
@@ -24,12 +25,12 @@
                 <button class="comment-control-btn" v-on:click="showCommentReplyInput(comment.id)" v-if="isSignedIn">댓글</button>
                 <button class="comment-control-btn comment-parent-modify-btn"
                         v-on:click="deleteComment(comment.id)"
-                        v-if="comment.isDeleted === '0' && isSignedIn && comment.memberId === user.id">삭제</button>
+                        v-if="!comment.isDeleted && isSignedIn && comment.memberId === user.id">삭제</button>
                 <button class="comment-control-btn comment-parent-modify-btn"
                         v-on:click="showCommentUpdateInput(comment.id)"
-                        v-if="comment.isDeleted === '0' && isSignedIn && comment.memberId === user.id">수정</button>
+                        v-if="!comment.isDeleted && isSignedIn && comment.memberId === user.id">수정</button>
               </div>
-              <div class="comment-contents comment-deleted-contents" v-if="comment.isDeleted === '1'">삭제된 댓글입니다.</div>
+              <div class="comment-contents comment-deleted-contents" v-if="comment.isDeleted">삭제된 댓글입니다.</div>
               <div class="comment-contents" v-else>
                 <div v-if="showCommentUpdate === comment.id">
                   <textarea class="comment-input-text" v-bind:value="comment.contents"></textarea>
@@ -55,12 +56,12 @@
                   <span class="comment-reg-date">{{ childComment.regDate }}</span>
                   <button class="comment-control-btn comment-child-delete-btn"
                           v-on:click="deleteComment(childComment.id)"
-                          v-if="childComment.isDeleted === '0' && isSignedIn && childComment.memberId === user.id">삭제</button>
+                          v-if="!childComment.isDeleted && isSignedIn && childComment.memberId === user.id">삭제</button>
                   <button class="comment-control-btn comment-child-modify-btn"
                           v-on:click="showCommentUpdateInput(childComment.id)"
-                          v-if="childComment.isDeleted === '0' && isSignedIn && childComment.memberId === user.id">수정</button>
+                          v-if="!childComment.isDeleted && isSignedIn && childComment.memberId === user.id">수정</button>
                 </div>
-                <div class="comment-contents comment-deleted-contents" v-if="childComment.isDeleted === '1'">삭제된 댓글입니다.</div>
+                <div class="comment-contents comment-deleted-contents" v-if="childComment.isDeleted">삭제된 댓글입니다.</div>
                 <div class="comment-contents" v-else>
                   <div v-if="showCommentUpdate === childComment.id">
                     <textarea class="comment-input-text comment-reply-update-text" v-bind:value="childComment.contents"></textarea>
@@ -90,6 +91,8 @@
       <!-- 댓글 영역 끝 -->
       <!-- 버튼 영역 시작 -->
       <div class="btn-wrap">
+        <button class="list-btn" v-on:click="linkToUpdate" v-if="isSignedIn && post.memberId === user.id">수정</button>
+        <button class="list-btn" v-on:click="deletePost(post.id)" v-if="isSignedIn && post.memberId === user.id">삭제</button>
         <button class="list-btn" v-on:click="linkToList">목록으로</button>
       </div>
       <!-- 버튼 영역 끝 -->
@@ -98,14 +101,12 @@
 </template>
 
 <script>
-import { dateUtil } from '../../../assets/js/utils/dateUtil';
 export default {
   name: "Detail",
   data () {
     return {
       post: {},
       comments: {},
-      categoryName: '',
       showCommentReply: '',
       showCommentUpdate: '',
       user: {
@@ -117,11 +118,6 @@ export default {
   created () {
     this.fetchData(this.$route.params.categoryName);
   },
-  watch: {
-    '$store' () {
-      this.isSignedIn = this.$store.state.isSignedIn;
-    }
-  },
   methods: {
     fetchData (categoryName) {
       const _this = this;
@@ -129,19 +125,17 @@ export default {
         .then(response => {
           console.log(response);
           _this.post = response.data.post;
-          _this.post.regDate = dateUtil.convertStringToDate(_this.post.regDate);
           _this.comments = response.data.comments;
-          _this.comments.forEach(comment => {
-            comment.regDate = dateUtil.convertStringToDateTime(comment.regDate);
-            comment.children.forEach(childComment => {
-              childComment.regDate = dateUtil.convertStringToDateTime(childComment.regDate);
-            })
-          });
-          _this.categoryName = categoryName;
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    deletePost (postId) {
+      if (!confirm("정말 삭제하시겠습니까?")) {
+        return;
+      }
+      console.log(postId);
     },
     // 댓글 쓰기
     writeComment (parentCommentId) {
@@ -179,7 +173,15 @@ export default {
       this.showCommentUpdate = '';
     },
     linkToList () {
-      this.$router.push('/' + this.categoryName + '/' + this.$route.params.page);
+      this.$router.push('/' + this.post.categoryName + '/' + this.$route.params.page);
+    },
+    linkToUpdate () {
+      this.$router.push({
+        name: 'post',
+        params: {
+          post: this.post
+        }
+      });
     }
   }
 }
@@ -205,6 +207,9 @@ export default {
 }
 .category {
   color: #bdbdbd;
+}
+.private {
+  margin: 0 0 0 10px;
 }
 .reg-date {
   float: right;

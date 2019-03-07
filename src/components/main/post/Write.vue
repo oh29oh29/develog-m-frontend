@@ -53,6 +53,9 @@ export default {
     }
   },
   created () {
+    if (this.$route.params.post) {
+      this.post = this.$route.params.post;
+    }
     this.fetchCategories();
   },
   methods: {

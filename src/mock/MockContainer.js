@@ -106,6 +106,10 @@ export class MockContainer {
       post: postMockData.postMockData1[0][1],
       comments: commentMockData.commentEmptyMockData
     });
+    this.mock.onGet('/JAVA/카테고리1의 포스트3').reply(200, {
+      post: postMockData.postMockData1[0][2],
+      comments: commentMockData.commentEmptyMockData
+    });
     this.mock.onGet('/sign-in').reply(config => {
       const data = JSON.parse(config.data);
       return [200, {
