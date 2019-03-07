@@ -2,7 +2,7 @@
   <section class="post-list-wrap">
     <article>
       <div v-if="posts.length > 0">
-        <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.title, post.id)">
+        <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.urlPathName, post.id)">
           <span class="private" v-if="post.isPrivate">비공개</span>
           <span class="title">{{ post.title }}</span>
           <span class="reg-date">{{ post.regDate }}</span>
@@ -79,13 +79,13 @@ export default {
         });
     },
     // 상세보기 이동
-    linkToDetail (postTitle, postId) {
+    linkToDetail (postUrlPathName, postId) {
       this.$router.push({
         name: 'detail',
         params: {
           categoryName: this.categoryName,
           page: this.page.target,
-          postTitle: postTitle,
+          postUrlPathName: postUrlPathName,
           postId: postId
         }
       });

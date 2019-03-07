@@ -112,7 +112,11 @@ export default {
       user: {
         id: this.$store.state.user.id
       },
-      isSignedIn: this.$store.state.isSignedIn
+      isSignedIn: this.$store.state.isSignedIn,
+      routeParams: {
+        page: this.$route.params.page ? this.$route.params.page : '1',
+        postUrlPathName: this.$route.params.postUrlPathName
+      }
     }
   },
   created () {
@@ -121,7 +125,7 @@ export default {
   methods: {
     fetchData (categoryName) {
       const _this = this;
-      this.$http.get('/' + categoryName + '/' + this.$route.params.postTitle)
+      this.$http.get('/' + categoryName + '/' + this.routeParams.postUrlPathName)
         .then(response => {
           console.log(response);
           _this.post = response.data.post;
@@ -173,7 +177,13 @@ export default {
       this.showCommentUpdate = '';
     },
     linkToList () {
-      this.$router.push('/' + this.post.categoryName + '/' + this.$route.params.page);
+      this.$router.push({
+        name: 'list',
+        params: {
+          categoryName: this.post.categoryName,
+          page: this.routeParams.page
+        }
+      });
     },
     linkToUpdate () {
       this.$router.push({

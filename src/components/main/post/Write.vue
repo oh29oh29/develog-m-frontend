@@ -23,6 +23,9 @@
         height="500px"
         mode="wysiwyg"
     />
+    <div class="row">
+      <input type="text" class="title-input" placeholder="URL path name" v-model="post.urlPathName">
+    </div>
     <div class="btn-wrap">
       <button class="write-btn" v-on:click="submit">등록</button>
     </div>
@@ -48,7 +51,8 @@ export default {
         title: '',
         description: '',
         contents: '',
-        isPrivate: false
+        isPrivate: false,
+        urlPathName: ''
       }
     }
   },

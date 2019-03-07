@@ -60,14 +60,14 @@ export default new Router({
         },
         {
           path: ':categoryName/:page',
-          name: 'list2',
+          name: 'list',
           components: {
             category: MCategory,
             default: MPostList
           }
         },
         {
-          path: ':categoryName/:page/:postTitle',
+          path: ':categoryName/:postUrlPathName',
           name: 'detail',
           component: MPostDetail
         }

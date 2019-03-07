@@ -98,15 +98,15 @@ export class MockContainer {
     this.mock.onGet('/Tomcat/1').reply(200, {
       posts: postMockData.postEmptyMockData
     });
-    this.mock.onGet('/JAVA/카테고리1의 포스트1').reply(200, {
+    this.mock.onGet('/JAVA/c1p1').reply(200, {
       post: postMockData.postMockData1[0][0],
       comments: commentMockData.commentMockData1
     });
-    this.mock.onGet('/JAVA/카테고리1의 포스트2').reply(200, {
+    this.mock.onGet('/JAVA/c1p2').reply(200, {
       post: postMockData.postMockData1[0][1],
       comments: commentMockData.commentEmptyMockData
     });
-    this.mock.onGet('/JAVA/카테고리1의 포스트3').reply(200, {
+    this.mock.onGet('/JAVA/c1p3').reply(200, {
       post: postMockData.postMockData1[0][2],
       comments: commentMockData.commentEmptyMockData
     });
