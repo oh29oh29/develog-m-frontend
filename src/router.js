@@ -5,6 +5,9 @@ import MHome from './components/main/Home';
 import MIntro from './components/main/Intro';
 import MSignIn from './components/main/member/SignIn';
 import MSignUp from './components/main/member/SignUp';
+import MProfile from './components/main/member/Profile';
+import MPasswordChange from './components/main/member/PasswordChange';
+import MFindAccount from './components/main/member/FindAccount';
 import MCategory from './components/main/post/Category';
 import MPostList from './components/main/post/List';
 import MPostDetail from './components/main/post/Detail';
@@ -52,6 +55,21 @@ export default new Router({
           path: 'sign-up',
           name: 'signUp',
           component: MSignUp
+        },
+        {
+          path: 'profile',
+          name: 'profile',
+          component: MProfile
+        },
+        {
+          path: ':target/find',
+          name: 'accountFind',
+          component: MFindAccount
+        },
+        {
+          path: 'password/change',
+          name: 'passwordChange',
+          component: MPasswordChange
         },
         {
           path: 'post',

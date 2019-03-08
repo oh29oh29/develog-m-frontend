@@ -25,6 +25,7 @@ html, body {
 }
 button {
   cursor: pointer;
+  background-color: transparent;
 }
 a {
   text-decoration: none;

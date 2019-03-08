@@ -1,64 +1,59 @@
 <template>
-  <section>
-    <div class="sign-up-wrap">
-      <form id="signUpForm" class="sign-up-form" action="/member/sign-up" method="post">
-        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
-        <fieldset class="sign-up-fieldset">
-          <legend>기본 정보</legend>
-          <div class="sign-up-row">
-            <label for="id" class="label-for-input">아이디</label>
-            <input type="text" id="id" class="sign-up-box input-text input-short-text" name="id" v-model="idValue" v-on:blur="validate">
-            <button type="button" id="idCheckBtn" class="sub-btn ready-sub-btn">중복확인</button>
-            <p class="validation-msg" v-show="validatorFlags.id.isEmpty || validatorFlags.id.doesExist || validatorFlags.id.isNotAlphabatAndNumber">{{ validationMsg }}</p>
-          </div>
-          <div class="sign-up-row">
-            <label for="password" class="label-for-input">비밀번호</label>
-            <input type="password" id="password" class="sign-up-box input-text" name="passwd">
-            <p class="validation-msg" v-show="validatorFlags.password.isEmpty || validatorFlags.password.isLessThan8">{{ validationMsg }}</p>
-          </div>
-          <div class="sign-up-row">
-            <label for="passwordConfirm" class="label-for-input">비밀번호 확인</label>
-            <input type="password" id="passwordConfirm" class="sign-up-box input-text">
-            <p class="validation-msg" v-show="validatorFlags.password.isEmpty || validatorFlags.password.isNotMatch">{{ validationMsg }}</p>
-          </div>
-          <div class="sign-up-row">
-            <label for="name" class="label-for-input">이름</label>
-            <input type="text" id="name" class="sign-up-box input-text" name="name">
-            <p class="validation-msg" v-show="validatorFlags.name.isEmpty">{{ validationMsg }}</p>
-          </div>
-          <div class="sign-up-row">
-            <label for="email" class="label-for-input">이메일</label>
-            <input type="text" id="email" class="sign-up-box input-text" name="email">
-            <p class="validation-msg" v-show="validatorFlags.email.isEmpty || validatorFlags.email.isNotEmailFormat">{{ validationMsg }}</p>
-          </div>
-        </fieldset>
-        <div class="sign-up-row">
-          <button id="submitBtn" class="sign-up-box submit-btn">가입하기</button>
-        </div>
-      </form>
+  <section class="sign-up-wrap">
+    <h1>회원 가입</h1>
+    <fieldset>
+      <div class="row">
+        <label for="id" class="item-label">아이디</label>
+        <input type="text" id="id" class="item-value input-text input-short-text" v-model="idValue" v-on:blur="validate">
+        <button type="button" id="idCheckBtn" class="sub-btn ready-sub-btn">중복확인</button>
+        <p class="validation-msg" v-if="validatorFlags.id.isEmpty || validatorFlags.id.doesExist || validatorFlags.id.isNotAlphabatAndNumber">{{ validationMsg }}</p>
+      </div>
+      <div class="row">
+        <label for="password" class="item-label">비밀번호</label>
+        <input type="password" id="password" class="item-value input-text">
+        <p class="validation-msg" v-if="validatorFlags.password.isEmpty || validatorFlags.password.isLessThan8">{{ validationMsg }}</p>
+      </div>
+      <div class="row">
+        <label for="passwordConfirm" class="item-label">비밀번호 확인</label>
+        <input type="password" id="passwordConfirm" class="item-value input-text">
+        <p class="validation-msg" v-if="validatorFlags.password.isEmpty || validatorFlags.password.isNotMatch">{{ validationMsg }}</p>
+      </div>
+      <div class="row">
+        <label for="name" class="item-label">이름</label>
+        <input type="text" id="name" class="item-value input-text">
+        <p class="validation-msg" v-if="validatorFlags.name.isEmpty">{{ validationMsg }}</p>
+      </div>
+      <div class="row">
+        <label for="email" class="item-label">이메일</label>
+        <input type="text" id="email" class="item-value input-text">
+        <p class="validation-msg" v-if="validatorFlags.email.isEmpty || validatorFlags.email.isNotEmailFormat">{{ validationMsg }}</p>
+      </div>
+    </fieldset>
+    <div class="btn-wrap">
+      <button type="button" class="ok-btn">가입하기</button>
     </div>
   </section>
 </template>
 
 <script>
 import { Validator } from '../../../assets/js/validator';
-const validator = new Validator();
 export default {
   name: 'SignUp',
   data () {
     return {
-      validatorFlags: null,
+      validator: new Validator(),
+      validatorFlags: {},
       validationMsg: 'test',
       idValue: ''
     }
   },
   created () {
-    this.validatorFlags = validator.getFlags();
+    this.validatorFlags = this.validator.getFlags();
     this.validatorFlags.id.isEmpty = true;
   },
   methods: {
     validate () {
-      console.log(validator.checkRequiredValue(this.idValue));
+      console.log(this.validator.checkRequiredValue(this.idValue));
     }
   }
 }
@@ -69,41 +64,36 @@ export default {
   width: 500px;
   margin: 0 auto;
 }
-.sign-up-form {
-  font-size: 0;
-}
-.sign-up-fieldset {
+fieldset {
+  margin: 10px 0;
   border: 0;
-  margin: 0 0 50px 0;
 }
-.sign-up-fieldset legend{
-  font-size: 14px;
-  font-weight: bold;
-  padding: 0 10px 0 0;
-}
-.sign-up-row {
+.row {
   margin: 25px 0;
 }
-.label-for-input {
-  font-size: 16px;
+.item-label {
   display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 5px 0;
 }
-.sign-up-box {
+.item-value {
+  width: 500px;
+  height: 40px;
   line-height: 40px;
+  padding: 0 15px;
   font-size: 16px;
 }
 .input-text {
-  width: 500px;
-  padding: 0 15px;
-  border: 1px solid #000;
+  border: 1px solid #bdbdbd;
 }
 .input-short-text {
   width: 420px;
   vertical-align: middle;
   border: 0;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #000;
+  border-top: 1px solid #bdbdbd;
+  border-bottom: 1px solid #bdbdbd;
+  border-left: 1px solid #bdbdbd;
 }
 .validation-msg {
   font-size: 13px;
@@ -112,13 +102,14 @@ export default {
 }
 .sub-btn {
   width: 80px;
+  height: 40px;
   line-height: 40px;
   vertical-align: middle;
   background: none;
-  border: 1px solid #000;
+  border: 1px solid #bdbdbd;
 }
 .ready-sub-btn {
-  background-color: #FAED7D;
+
 }
 .failure-sub-btn {
   background-color: #F15F5F;
@@ -126,13 +117,13 @@ export default {
 .success-sub-btn {
   background-color: #86E57F;
 }
-.submit-btn {
-  width: 500px;
-  margin: 20px 0;
-  font-weight: bold;
-  background-color: green;
+.btn-wrap {
+  text-align: center;
 }
-.submit-btn:focus {
-  background-color: gray;
+.ok-btn {
+  width: 120px;
+  height: 40px;
+  margin: 20px 0;
+  font-size: 14px;
 }
 </style>

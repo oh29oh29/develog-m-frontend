@@ -8,7 +8,7 @@
     </div>
     <div class="member-wrap">
       <div v-if="isSignedIn">
-        <span class="user-name">{{ user.name }} 님</span>
+        <span class="user-name" v-on:click="linkToProfile">{{ user.name }} 님</span>
         <button class="sign-inout-btn" v-on:click="signOut">Sign out</button>
       </div>
       <router-link to="/sign-in" class="sign-inout-btn" v-else>Sign in</router-link>
@@ -42,6 +42,9 @@ export default {
       this.$store.dispatch('SIGN_OUT', () => {
         this.$router.go(0);
       });
+    },
+    linkToProfile () {
+      this.$router.push('/profile');
     }
   }
 }
@@ -82,5 +85,6 @@ header {
 .user-name {
   font-size: 13px;
   margin: 0 10px 0 0;
+  cursor: pointer;
 }
 </style>
