@@ -120,12 +120,16 @@ export default {
     }
   },
   created () {
-    this.fetchData(this.$route.params.categoryName);
+    this.fetchData();
   },
   methods: {
-    fetchData (categoryName) {
+    fetchData () {
       const _this = this;
-      this.$http.get('/' + categoryName + '/' + this.routeParams.postUrlPathName)
+      this.$http.get('/post/detail', {
+        params: {
+          urlPathName: this.routeParams.postUrlPathName
+        }
+      })
         .then(response => {
           console.log(response);
           _this.post = response.data.post;

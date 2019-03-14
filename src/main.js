@@ -10,7 +10,7 @@ import { MockContainer } from "./mock/MockContainer";
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
-const isDev = true;
+const isDev = false;
 
 if (isDev) {
   new MockContainer(axios);

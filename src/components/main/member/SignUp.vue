@@ -49,7 +49,6 @@ export default {
   },
   created () {
     this.validatorFlags = this.validator.getFlags();
-    this.validatorFlags.id.isEmpty = true;
   },
   methods: {
     validate () {

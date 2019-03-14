@@ -7,16 +7,16 @@ export class Validator {
         'isNotAlphabatAndNumber': false
       },
       password: {
-        'isEmpty': true,
-        'isNotMatch': true,
-        'isLessThan8': true
+        'isEmpty': false,
+        'isNotMatch': false,
+        'isLessThan8': false
       },
       name: {
-        'isEmpty': true
+        'isEmpty': false
       },
       email: {
-        'isEmpty': true,
-        'isNotEmailFormat': true
+        'isEmpty': false,
+        'isNotEmailFormat': false
       }
     }
   }

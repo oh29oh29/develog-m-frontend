@@ -2,7 +2,7 @@
   <section class="post-list-wrap">
     <article>
       <div v-if="posts.length > 0">
-        <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.urlPathName, post.id)">
+        <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.urlPathName, post.id, post.regDate)">
           <span class="private" v-if="post.isPrivate">비공개</span>
           <span class="title">{{ post.title }}</span>
           <span class="reg-date">{{ post.regDate }}</span>
@@ -40,17 +40,21 @@ export default {
       },
       isDisabledPrev: false,
       isDisabledNext: false,
-      categoryName: '',
       user: this.$store.state.user,
-      isSignedIn: this.$store.state.isSignedIn
+      isSignedIn: this.$store.state.isSignedIn,
+      /*
+      * keys: [categoryId, categoryName, page]
+      */
+      routeParams: this.$route.params
     }
   },
   created () {
-    this.fetchData(this.$route.params.categoryName, this.$route.params.page);
+    this.fetchData();
   },
   watch: {
     '$route' () {
-      this.fetchData(this.$route.params.categoryName, this.$route.params.page);
+      this.routeParams = this.$route.params;
+      this.fetchData();
     }
   },
   computed: {
@@ -64,35 +68,49 @@ export default {
   },
   methods: {
     // 데이터 갱신
-    fetchData (categoryName, page) {
+    fetchData () {
       const _this = this;
-      this.$http.get('/' + categoryName + '/' + page)
-        .then(response => {
-          console.log(response);
-          _this.posts = response.data.posts;
-          if (_this.posts.length > 0) {
-            _this.page = response.data.page;
-            _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
-            _this.isDisabledNext = this.page.end === this.page.total;
-          }
-          _this.categoryName = categoryName;
-        });
+      this.$http.get('/post', {
+        params: {
+          categoryId: this.routeParams.categoryId,
+          categoryName: this.routeParams.categoryName,
+          page: this.routeParams.page
+        }
+      }).then(response => {
+        console.log(response);
+        _this.posts = response.data.posts;
+        if (_this.posts.length > 0) {
+          _this.page = response.data.page;
+          _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
+          _this.isDisabledNext = this.page.end === this.page.total;
+        }
+      }).catch(error => {
+        console.log(error);
+      });
     },
     // 상세보기 이동
-    linkToDetail (postUrlPathName, postId) {
+    linkToDetail (postUrlPathName, postId, postRegDate) {
       this.$router.push({
         name: 'detail',
         params: {
-          categoryName: this.categoryName,
+          categoryName: this.routeParams.categoryName,
           page: this.page.target,
           postUrlPathName: postUrlPathName,
-          postId: postId
+          postId: postId,
+          regDate: postRegDate
         }
       });
     },
     // 페이지 이동
     linkToPage (page) {
-      this.$router.push('/' + this.categoryName + '/' + page);
+      this.$router.push({
+        name: 'list',
+        params: {
+          categoryName: this.routeParams.categoryName,
+          categoryId: this.routeParams.categoryId,
+          page: page
+        }
+      });
     },
     // 이전 블럭 이동
     linkToPrev () {
@@ -100,8 +118,14 @@ export default {
         return;
       }
 
-      let target = this.page.start - 1;
-      this.$router.push('/' + this.categoryName + '/' + target);
+      this.$router.push({
+        name: 'list',
+        params: {
+          categoryName: this.routeParams.categoryName,
+          categoryId: this.routeParams.categoryId,
+          page: this.page.start - 1
+        }
+      });
     },
     // 다음 블럭 이동
     linkToNext () {
@@ -109,14 +133,20 @@ export default {
         return;
       }
 
-      let target = this.page.end + 1;
-      this.$router.push('/' + this.categoryName + '/' + target);
+      this.$router.push({
+        name: 'list',
+        params: {
+          categoryName: this.routeParams.categoryName,
+          categoryId: this.routeParams.categoryId,
+          page: this.page.end + 1
+        }
+      });
     },
     linkToWrite () {
       this.$router.push({
         name: 'post',
         params: {
-          categoryName: this.categoryName
+          categoryName: this.routeParams.categoryName
         }
       });
     }

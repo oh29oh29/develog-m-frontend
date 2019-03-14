@@ -85,7 +85,7 @@ export default new Router({
           }
         },
         {
-          path: ':categoryName/:postUrlPathName',
+          path: ':categoryName/:regDate/:postUrlPathName',
           name: 'detail',
           component: MPostDetail
         }
