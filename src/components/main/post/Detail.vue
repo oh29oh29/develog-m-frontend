@@ -18,22 +18,22 @@
         <div class="comments-inner">
           <!-- 댓글 시작 -->
           <div v-if="comments.length > 0">
-            <div class="comment" v-for="comment in comments" v-bind:key="comment.id">
+            <div v-for="comment in comments" v-bind:key="comment.id" v-bind:class="{ 'comment': !comment.parentCommentId, 'child-comment': comment.parentCommentId }">
               <div class="comment-top">
                 <span class="comment-writer">{{ comment.memberId }}</span>
                 <span class="comment-reg-date">{{ comment.regDate }}</span>
-                <button class="comment-control-btn" v-on:click="showCommentReplyInput(comment.id)" v-if="isSignedIn">댓글</button>
-                <button class="comment-control-btn comment-parent-modify-btn"
+                <button class="comment-control-btn" v-on:click="showCommentReplyInput(comment.id)" v-if="isSignedIn && !comment.parentCommentId">댓글</button>
+                <button class="comment-control-btn" v-bind:class="{ 'comment-parent-modify-btn': !comment.parentCommentId, 'comment-child-delete-btn': comment.parentCommentId }"
                         v-on:click="deleteComment(comment.id)"
                         v-if="!comment.isDeleted && isSignedIn && comment.memberId === user.id">삭제</button>
-                <button class="comment-control-btn comment-parent-modify-btn"
+                <button class="comment-control-btn" v-bind:class="{ 'comment-parent-modify-btn': !comment.parentCommentId, 'comment-child-modify-btn': comment.parentCommentId }"
                         v-on:click="showCommentUpdateInput(comment.id)"
                         v-if="!comment.isDeleted && isSignedIn && comment.memberId === user.id">수정</button>
               </div>
               <div class="comment-contents comment-deleted-contents" v-if="comment.isDeleted">삭제된 댓글입니다.</div>
               <div class="comment-contents" v-else>
                 <div v-if="showCommentUpdate === comment.id">
-                  <textarea class="comment-input-text" v-bind:value="comment.contents"></textarea>
+                  <textarea class="comment-input-text" v-bind:class="{ 'comment-reply-update-text': comment.parentCommentId }" v-bind:value="comment.contents"></textarea>
                   <button class="comment-reply-input-btn" v-on:click="updateComment">등록</button>
                   <button class="comment-reply-cancel-btn" v-on:click="cancelUpdateComment">취소</button>
                 </div>
@@ -46,32 +46,6 @@
                 <button class="comment-reply-cancel-btn" v-on:click="cancelReplyComment">취소</button>
               </div>
               <!-- 대댓글 쓰기 끝 -->
-              <!-- 대댓글 시작 -->
-              <div class="child-comment"
-                   v-bind:class="{ 'child-comment-last': index === comment.children.length - 1 }"
-                   v-for="(childComment, index) in comment.children"
-                   v-bind:key="childComment.id">
-                <div class="comment-top">
-                  <span class="comment-writer">{{ childComment.memberId }}</span>
-                  <span class="comment-reg-date">{{ childComment.regDate }}</span>
-                  <button class="comment-control-btn comment-child-delete-btn"
-                          v-on:click="deleteComment(childComment.id)"
-                          v-if="!childComment.isDeleted && isSignedIn && childComment.memberId === user.id">삭제</button>
-                  <button class="comment-control-btn comment-child-modify-btn"
-                          v-on:click="showCommentUpdateInput(childComment.id)"
-                          v-if="!childComment.isDeleted && isSignedIn && childComment.memberId === user.id">수정</button>
-                </div>
-                <div class="comment-contents comment-deleted-contents" v-if="childComment.isDeleted">삭제된 댓글입니다.</div>
-                <div class="comment-contents" v-else>
-                  <div v-if="showCommentUpdate === childComment.id">
-                    <textarea class="comment-input-text comment-reply-update-text" v-bind:value="childComment.contents"></textarea>
-                    <button class="comment-reply-input-btn" v-on:click="updateComment">등록</button>
-                    <button class="comment-reply-cancel-btn" v-on:click="cancelUpdateComment">취소</button>
-                  </div>
-                  <p v-else>{{ childComment.contents }}</p>
-                </div>
-              </div>
-              <!-- 대댓글 끝 -->
             </div>
           </div>
           <div v-else>
@@ -243,12 +217,15 @@ export default {
   border-radius: 20px;
 }
 .comment {
-  margin: 0 20px;
-  padding: 15px 0;
-  border-bottom: 1px solid #eaeaea;
+  margin: 0 20px 15px 20px;
+  padding: 15px 0 0 0;
+  border-top: 1px solid #eaeaea;
+}
+.comment:first-child {
+  border: 0;
 }
 .comment:last-child {
-  border: 0;
+  padding: 15px 0;
 }
 .comment-top {
 
@@ -294,10 +271,7 @@ export default {
   height: 50px;
 }
 .child-comment {
-  margin: 15px 0 15px 15px;
-}
-.child-comment-last {
-  margin-bottom: 0;
+  margin: 15px 20px 15px 40px;
 }
 .comment-write {
   margin: 0 20px;
@@ -312,7 +286,7 @@ export default {
   min-height: 50px;
 }
 .comment-reply-update-text {
-  width: 705px;
+  width: 700px;
 }
 .comment-input-btn {
   width: 60px;

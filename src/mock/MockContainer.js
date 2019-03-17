@@ -70,7 +70,7 @@ export class MockContainer {
 
       return [200, response];
     });
-    this.mock.onGet('/JAVA/c1p1').reply(200, {
+    this.mock.onGet('/post/detail').reply(200, {
       post: postMockData.postMockData1[0][0],
       comments: commentMockData.commentMockData1
     });
