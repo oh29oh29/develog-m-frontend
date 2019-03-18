@@ -1,16 +1,17 @@
 <template>
   <section class="sign-up-wrap">
+    <!--<meta name="csrf-token" v-bind:content="token">-->
     <h1>회원 가입</h1>
     <fieldset>
       <div class="row">
         <label for="id" class="item-label">아이디</label>
-        <input type="text" id="id" class="item-value input-text input-short-text" v-model="idValue" v-on:blur="validate">
+        <input type="text" id="id" class="item-value input-text input-short-text" v-model="user.id" v-on:blur="validate">
         <button type="button" id="idCheckBtn" class="sub-btn ready-sub-btn">중복확인</button>
         <p class="validation-msg" v-if="validatorFlags.id.isEmpty || validatorFlags.id.doesExist || validatorFlags.id.isNotAlphabatAndNumber">{{ validationMsg }}</p>
       </div>
       <div class="row">
         <label for="password" class="item-label">비밀번호</label>
-        <input type="password" id="password" class="item-value input-text">
+        <input type="password" id="password" class="item-value input-text" v-model="user.passwd">
         <p class="validation-msg" v-if="validatorFlags.password.isEmpty || validatorFlags.password.isLessThan8">{{ validationMsg }}</p>
       </div>
       <div class="row">
@@ -20,18 +21,19 @@
       </div>
       <div class="row">
         <label for="name" class="item-label">이름</label>
-        <input type="text" id="name" class="item-value input-text">
+        <input type="text" id="name" class="item-value input-text" v-model="user.name">
         <p class="validation-msg" v-if="validatorFlags.name.isEmpty">{{ validationMsg }}</p>
       </div>
       <div class="row">
         <label for="email" class="item-label">이메일</label>
-        <input type="text" id="email" class="item-value input-text">
+        <input type="text" id="email" class="item-value input-text" v-model="user.email">
         <p class="validation-msg" v-if="validatorFlags.email.isEmpty || validatorFlags.email.isNotEmailFormat">{{ validationMsg }}</p>
       </div>
     </fieldset>
     <div class="btn-wrap">
-      <button type="button" class="ok-btn">가입하기</button>
+      <button type="button" class="ok-btn" v-on:click="signUp">가입하기</button>
     </div>
+    <!--<input type="hidden" name="_token" :value="csrf">-->
   </section>
 </template>
 
@@ -44,7 +46,12 @@ export default {
       validator: new Validator(),
       validatorFlags: {},
       validationMsg: 'test',
-      idValue: ''
+      user: {
+        id: '',
+        passwd: '',
+        name: '',
+        email: ''
+      }
     }
   },
   created () {
@@ -52,7 +59,16 @@ export default {
   },
   methods: {
     validate () {
-      console.log(this.validator.checkRequiredValue(this.idValue));
+    },
+    signUp () {
+      const _this = this;
+      this.$http.post('/sign-up', _this.user)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 }

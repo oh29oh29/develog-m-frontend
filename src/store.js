@@ -27,7 +27,7 @@ export default new Vuex.Store({
   // async
   actions: {
     SIGN_IN (context, payload) {
-      axios.get('/sign-in', { data: payload })
+      axios.post('/sign-in', { data: payload })
         .then(response => {
           console.log(response);
           context.commit('SET_USER_INFO', {
@@ -42,7 +42,7 @@ export default new Vuex.Store({
         });
     },
     SIGN_OUT (context, callbank) {
-      axios.get('/sign-out')
+      axios.post('/sign-out')
         .then(response => {
           console.log(response);
           this.dispatch('REMOVE_USER_INFO');
