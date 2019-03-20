@@ -32,8 +32,8 @@ export default {
   methods: {
     signIn () {
       const id = this.id;
-      const password = this.password;
-      this.$store.dispatch('SIGN_IN', { id, password })
+      const passwd = this.password;
+      this.$store.dispatch('SIGN_IN', { id, passwd })
         .then(() => {
           this.linkToHome();
         })

@@ -275,7 +275,7 @@ export default {
 }
 .comment-write {
   margin: 0 20px;
-  padding: 15px 0;
+  padding: 0 0 15px 0;
 }
 .comment-input-text {
   width: 720px;

@@ -27,7 +27,10 @@ export default new Vuex.Store({
   // async
   actions: {
     SIGN_IN (context, payload) {
-      axios.post('/sign-in', { data: payload })
+      axios.post('/sign-in', {
+        id: payload.id,
+        passwd: payload.passwd
+      })
         .then(response => {
           console.log(response);
           context.commit('SET_USER_INFO', {
