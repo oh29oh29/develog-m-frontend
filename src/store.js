@@ -27,9 +27,14 @@ export default new Vuex.Store({
   // async
   actions: {
     SIGN_IN (context, payload) {
-      axios.post('/sign-in', {
-        id: payload.id,
-        passwd: payload.passwd
+      axios.post('/sign-in', null, {
+        params: {
+          id: payload.id,
+          passwd: payload.passwd
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
         .then(response => {
           console.log(response);
