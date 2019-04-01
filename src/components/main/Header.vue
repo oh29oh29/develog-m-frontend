@@ -39,9 +39,14 @@ export default {
       this.isSignedIn = this.$store.state.isSignedIn;
     },
     signOut () {
-      this.$store.dispatch('SIGN_OUT', () => {
-        this.$router.go(0);
-      });
+      this.$store.dispatch('SIGN_OUT')
+        .then(response => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     linkToProfile () {
       this.$router.push('/profile');
@@ -79,8 +84,8 @@ header {
 }
 .sign-inout-btn {
   font-size: 12px;
-  padding: 8px 10px;
-  border: 1px solid #bdbdbd;
+  padding: 6px 8px;
+  border: 0;
 }
 .user-name {
   font-size: 13px;

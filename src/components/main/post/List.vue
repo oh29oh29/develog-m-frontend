@@ -1,7 +1,7 @@
 <template>
   <section class="post-list-wrap">
     <article>
-      <div v-if="posts.length > 0">
+      <div v-if="notEmpty">
         <div class="post" v-for="post in posts" v-bind:key="post.id" v-on:click="linkToDetail(post.urlPathName, post.id, post.regDate)">
           <span class="private" v-if="post.isPrivate">비공개</span>
           <span class="title">{{ post.title }}</span>
@@ -19,7 +19,7 @@
           <span class="empty-text">작성된 포스트가 없습니다.</span>
         </div>
       </div>
-      <div class="post-management-btn-wrap" v-if="isSignedIn && user.role === 'ADMIN'">
+      <div class="post-management-btn-wrap" v-if="isSignedIn && user.role === 'ROLE_ADMIN'">
         <button class="post-write-btn" v-on:click="linkToWrite">글쓰기</button>
       </div>
     </article>
@@ -45,7 +45,8 @@ export default {
       /*
       * keys: [categoryId, categoryName, page]
       */
-      routeParams: this.$route.params
+      routeParams: this.$route.params,
+      notEmpty: false
     }
   },
   created () {
@@ -83,6 +84,9 @@ export default {
           _this.page = response.data.page;
           _this.isDisabledPrev = this.page.total < 6 || this.page.target < 6;
           _this.isDisabledNext = this.page.end === this.page.total;
+          _this.notEmpty = true;
+        } else {
+          _this.notEmpty = false;
         }
       }).catch(error => {
         console.log(error);
@@ -97,7 +101,9 @@ export default {
           page: this.page.target,
           postUrlPathName: postUrlPathName,
           postId: postId,
-          regDate: postRegDate
+          regDateYear: postRegDate.substring(0, 4),
+          regDateMonth: postRegDate.substring(5, 7),
+          regDateDay: postRegDate.substring(8, 10)
         }
       });
     },
@@ -167,7 +173,7 @@ export default {
 .post {
   font-size: 20px;
   padding: 40px 20px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #dadada;
 }
 .post-empty {
   font-size: 20px;
@@ -186,16 +192,20 @@ export default {
 
 }
 .reg-date {
-  font-size: 16px;
+  font-size: 14px;
   float: right;
-  width: 100px;
+  width: 120px;
   text-align: center;
-  line-height: 55px;
+  line-height: 65px;
 
 }
 .description {
-  width: 540px;
+  width: 500px;
   margin: 20px 0 0 0;
+  font-size: 16px;
+  color: #666;
+  -ms-word-break: break-word;
+  word-break: break-word;
 }
 .paging {
   margin: 30px;

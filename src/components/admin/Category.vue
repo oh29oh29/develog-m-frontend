@@ -51,7 +51,7 @@ export default {
   methods: {
     fetchData () {
       const _this = this;
-      this.$http.get('/category')
+      this.$http.get('/admin/category')
         .then(response => {
           console.log(response);
           _this.categories = response.data;
@@ -59,7 +59,7 @@ export default {
     },
     addCategory () {
       const _this = this;
-      this.$http.post('/category', _this.newCategory)
+      this.$http.post('/admin/category', _this.newCategory)
         .then(response => {
           console.log(response);
           _this.categories.push(_this.newCategory);
@@ -70,7 +70,7 @@ export default {
     },
     updateCategory (index) {
       const _this = this;
-      this.$http.patch('/category', _this.categories[index])
+      this.$http.patch('/admin/category', _this.categories[index])
         .then(response => {
           console.log(response);
         }).catch(error => {
@@ -84,7 +84,11 @@ export default {
       }
 
       const _this = this;
-      this.$http.delete('/category', id)
+      this.$http.delete('/admin/category', {
+        params: {
+          id: id
+        }
+      })
         .then(response => {
           console.log(response);
           _this.categories.splice(index, 1);

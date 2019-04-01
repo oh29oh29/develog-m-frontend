@@ -2,7 +2,7 @@
   <section class="post-write-wrap">
     <div class="row">
       <div class="category-select-wrap">
-        <select class="category-select" v-model="post.categoryId">
+        <select class="category-select" v-model="post.category.id">
           <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{ category.name }}</option>
         </select>
       </div>
@@ -17,12 +17,7 @@
     <div class="row">
       <textarea class="description-input" placeholder="Description" v-model="post.description"></textarea>
     </div>
-    <editor
-        v-model="post.contents"
-        :options="editorOptions"
-        height="500px"
-        mode="wysiwyg"
-    />
+    <editor v-model="post.contents" :options="editorOptions" height="500px" mode="wysiwyg"/>
     <div class="row">
       <input type="text" class="title-input" placeholder="URL path name" v-model="post.urlPathName">
     </div>
@@ -33,10 +28,7 @@
 </template>
 
 <script>
-import 'tui-editor/dist/tui-editor.css';
-import 'tui-editor/dist/tui-editor-contents.css';
-import 'codemirror/lib/codemirror.css';
-import { Editor } from '@toast-ui/vue-editor'
+import Editor from '@toast-ui/vue-editor/src/Editor.vue'
 
 export default {
   name: "Write",
@@ -47,7 +39,13 @@ export default {
       },
       categories: [],
       post: {
-        categoryId: '',
+        category: {
+          id: '',
+          name: ''
+        },
+        member: {
+          id: this.$store.state.user.id
+        },
         title: '',
         description: '',
         contents: '',
@@ -57,8 +55,24 @@ export default {
     }
   },
   created () {
-    if (this.$route.params.post) {
-      this.post = this.$route.params.post;
+    const _post = this.$route.params.post;
+    if (!!_post) {
+      this.post = {
+        id: _post.id,
+        category: {
+          id: _post.categoryId,
+          name: _post.categoryName
+        },
+        member: {
+          id: this.$store.state.user.id
+        },
+        title: _post.title,
+        description: _post.description,
+        contents: _post.contents,
+        regDate: '',
+        isPrivate: _post.isPrivate,
+        urlPathName: _post.urlPathName
+      };
     }
     this.fetchCategories();
   },
@@ -72,7 +86,8 @@ export default {
           _this.categories = response.data;
           _this.categories.every(category => {
             if (category.name === categoryName) {
-              _this.post.categoryId = category.id;
+              _this.post.category.id = category.id;
+              _this.post.category.name = category.name;
               return false;
             }
             return true;
@@ -81,10 +96,22 @@ export default {
     },
     submit () {
       const _this = this;
+      console.log('send data', this.post);
       this.$http.post('/post', this.post)
         .then(response => {
           console.log(response);
-          _this.$router.push('/' + response.data.categoryName + '/1');
+          const post = response.data;
+          _this.$router.push({
+            name: 'detail',
+            params: {
+              categoryName: post.category.name,
+              postUrlPathName: post.urlPathName,
+              postId: post.id,
+              regDateYear: post.regDate.substring(0, 4),
+              regDateMonth: post.regDate.substring(5, 7),
+              regDateDay: post.regDate.substring(8, 10)
+            }
+          });
         })
         .catch(error => {
           console.log(error);

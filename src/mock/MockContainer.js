@@ -87,7 +87,7 @@ export class MockContainer {
       return [200, {
         id: data.id,
         name: '권혁재',
-        role: 'ADMIN',
+        role: 'ROLE_ADMIN',
         accessToken: 'THIS_IS_ACCESS_TOKEN'
       }]
     });

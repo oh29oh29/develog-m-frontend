@@ -1,6 +1,12 @@
 const postMockData1 = [
   [
-    { id: '101', categoryId: '1', categoryName: 'JAVA', memberId: 'oh29oh29', title: '카테고리1의 포스트1', description: 'testDesc', contents: 'testContents', regDate: '2019.01.31', lastUpdateDate: '2019.02.01', views: '100', isPrivate: false, urlPathName: 'c1p1'},
+    { id: '101', categoryId: '1', categoryName: 'JAVA', memberId: 'oh29oh29', title: '카테고리1의 포스트1', description: 'testDesc', contents: '``` java\n' +
+        'class a {\n' +
+        '  public void main() {\n' +
+        '    System.out.println("test");\n' +
+        '  }\n' +
+        '}\n' +
+        '```', regDate: '2019.01.31', lastUpdateDate: '2019.02.01', views: '100', isPrivate: false, urlPathName: 'c1p1'},
     { id: '102', categoryId: '1', categoryName: 'JAVA', memberId: 'oh29oh29', title: '카테고리1의 포스트2', description: 'testDesc', contents: 'testContents', regDate: '2019.01.31', lastUpdateDate: '2019.02.01', views: '100', isPrivate: false, urlPathName: 'c1p2'},
     { id: '103', categoryId: '1', categoryName: 'JAVA', memberId: 'oh29oh29', title: '카테고리1의 포스트3', description: 'testDesc', contents: 'testContents', regDate: '2019.01.31', lastUpdateDate: '2019.02.01', views: '100', isPrivate: true, urlPathName: 'c1p3'},
     { id: '104', categoryId: '1', categoryName: 'JAVA', memberId: 'oh29oh29', title: '카테고리1의 포스트4', description: 'testDesc', contents: 'testContents', regDate: '2019.01.31', lastUpdateDate: '2019.02.01', views: '100', isPrivate: false, urlPathName: 'c1p4'},

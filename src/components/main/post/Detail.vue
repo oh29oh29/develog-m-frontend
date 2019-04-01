@@ -8,9 +8,7 @@
         <span class="reg-date">{{ post.regDate }}</span>
       </div>
       <span class="title">{{ post.title }}</span>
-      <div class="contents">
-        {{ post.contents }}
-      </div>
+      <viewer class="contents" :value="post.contents"/>
       <!-- 포스트 영역 끝 -->
       <!-- 댓글 영역 시작 -->
       <div class="comments-wrap">
@@ -75,8 +73,11 @@
 </template>
 
 <script>
+import Viewer from '@toast-ui/vue-editor/src/Viewer.vue'
+
 export default {
   name: "Detail",
+  components: { Viewer },
   data () {
     return {
       post: {},
@@ -117,7 +118,19 @@ export default {
       if (!confirm("정말 삭제하시겠습니까?")) {
         return;
       }
-      console.log(postId);
+
+      this.$http.delete('/post', {
+        params: {
+          id: postId
+        }
+      })
+        .then(response => {
+          console.log(response);
+          this.linkToList();
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     // 댓글 쓰기
     writeComment (parentCommentId) {
@@ -189,9 +202,12 @@ export default {
 }
 .contents {
   margin: 50px 0;
-  padding: 20px 20px;
+  padding: 10px 0;
   border-left: 1px solid #e4e4e4;
   border-right: 1px solid #e4e4e4;
+}
+.contents p {
+  padding: 0 20px;
 }
 .category {
   color: #bdbdbd;
@@ -201,6 +217,7 @@ export default {
 }
 .reg-date {
   float: right;
+  font-size: 14px;
 }
 .comments-wrap {
   margin: 20px 0;
@@ -235,6 +252,7 @@ export default {
 }
 .comment-reg-date {
   margin: 0 0 0 10px;
+  font-size: 14px;
   color: #aaaaaa;
 }
 .comment-contents {

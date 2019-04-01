@@ -27,40 +27,42 @@ export default new Vuex.Store({
   // async
   actions: {
     SIGN_IN (context, payload) {
-      axios.post('/sign-in', null, {
-        params: {
-          id: payload.id,
-          passwd: payload.passwd
-        },
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => {
-          console.log(response);
-          context.commit('SET_USER_INFO', {
-            id: response.data.id,
-            name: response.data.name,
-            role: response.data.role,
-            accessToken: response.data.accessToken
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    SIGN_OUT (context, callbank) {
-      axios.post('/sign-out')
-        .then(response => {
-          console.log(response);
-          this.dispatch('REMOVE_USER_INFO');
-          if (typeof callbank === 'function') {
-            callbank();
+      return new Promise((resolve, reject) => {
+        axios.post('/sign-in', null, {
+          params: {
+            id: payload.id,
+            passwd: payload.passwd
+          },
+          headers: {
+            'Content-Type': 'application/json'
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
+          .then(response => {
+            context.commit('SET_USER_INFO', {
+              id: response.data.id,
+              name: response.data.name,
+              role: response.data.role,
+              accessToken: response.data.accessToken
+            });
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+
+    },
+    SIGN_OUT (context) {
+      return new Promise((resolve, reject) => {
+        axios.post('/sign-out')
+          .then(response => {
+            context.commit('SET_USER_INFO', {});
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     },
     REMOVE_USER_INFO (context) {
       context.commit('SET_USER_INFO', {});

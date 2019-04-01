@@ -37,6 +37,9 @@ export default {
         .then(response => {
           console.log(response);
           _this.categories = response.data;
+        })
+        .catch(error => {
+          console.log(error);
         });
     },
     linkToList (name, id) {
@@ -58,17 +61,17 @@ export default {
 
 <style scoped>
 .category-wrap {
-  display: inline-block;
-  vertical-align: top;
-  width: 200px;
-  margin: 0 10px;
-  padding: 0 10px;
-  border-radius: 10px;
-  font-size: 16px;
-}
+    display: inline-block;
+    width: 200px;
+    margin: 0 10px;
+    padding: 0 10px;
+    border-radius: 10px;
+    vertical-align: top;
+    font-size: 16px;
+  }
 .header-ko {
   display: inline-block;
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
 }
 .header-en {
   margin: 0 0 0 5px;
@@ -79,14 +82,17 @@ export default {
    margin: 5px 0;
 }
 .name {
-  cursor: pointer;
-  line-height: 20px;
-  vertical-align: sub;
   display: inline-block;
+  line-height: 20px;
+  vertical-align: middle;
+  cursor: pointer;
 }
 .active {
-  vertical-align: sub;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
   margin: 0 0 0 5px;
+  vertical-align: middle;
   font-size: 12px;
 }
 </style>
