@@ -1,5 +1,9 @@
 <template>
-  <section class="intro-wrap">INTRO</section>
+  <section class="intro-wrap">
+    <article>
+      <div></div>
+    </article>
+  </section>
 </template>
 
 <script>

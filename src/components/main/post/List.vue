@@ -14,7 +14,7 @@
           <span class="page-btn" v-bind:class="{ 'page-disabled-btn': isDisabledNext }" v-on:click="linkToNext">→</span>
         </div>
       </div>
-      <div v-else>
+      <div v-if="empty">
         <div class="post-empty">
           <span class="empty-text">작성된 포스트가 없습니다.</span>
         </div>
@@ -46,10 +46,13 @@ export default {
       * keys: [categoryId, categoryName, page]
       */
       routeParams: this.$route.params,
-      notEmpty: false
+      notEmpty: false,
+      empty: false
     }
   },
   created () {
+    this.notEmpty = false;
+    this.empty = false;
     this.fetchData();
   },
   watch: {
@@ -86,7 +89,7 @@ export default {
           _this.isDisabledNext = this.page.end === this.page.total;
           _this.notEmpty = true;
         } else {
-          _this.notEmpty = false;
+          _this.empty = true;
         }
       }).catch(error => {
         console.log(error);
