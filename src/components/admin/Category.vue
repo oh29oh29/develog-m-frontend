@@ -53,20 +53,21 @@ export default {
       const _this = this;
       this.$http.get('/admin/category')
         .then(response => {
-          console.log(response);
           _this.categories = response.data;
+        })
+        .catch(error => {
+          console.log(error);
         });
     },
     addCategory () {
       const _this = this;
       this.$http.post('/admin/category', _this.newCategory)
         .then(response => {
-          console.log(response);
           _this.categories.push(_this.newCategory);
         }).catch(error => {
             alert("카테고리 추가 실패");
             console.log(error);
-        })
+        });
     },
     updateCategory (index) {
       const _this = this;
@@ -76,7 +77,7 @@ export default {
         }).catch(error => {
           alert("카테고리 수정 실패");
           console.log(error);
-        })
+        });
     },
     deleteCategory (id, index) {
       if (!confirm("정말 삭제하시겠습니까?")) {
@@ -95,7 +96,7 @@ export default {
         }).catch(error => {
           alert("카테고리 제거 실패");
           console.log(error);
-        })
+        });
     }
   }
 }

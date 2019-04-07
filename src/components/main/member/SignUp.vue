@@ -39,6 +39,8 @@
 
 <script>
 import { Validator } from '../../../assets/js/validator';
+import sha256 from 'js-sha256';
+
 export default {
   name: 'SignUp',
   data () {
@@ -62,7 +64,12 @@ export default {
     },
     signUp () {
       const _this = this;
-      this.$http.post('/sign-up', _this.user)
+      this.$http.post('/sign-up', {
+        id: _this.user.id,
+        passwd: sha256(_this.user.passwd),
+        name: _this.user.name,
+        email: _this.user.email
+      })
         .then(response => {
           console.log(response);
         })

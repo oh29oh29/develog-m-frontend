@@ -35,7 +35,6 @@ export default {
       const _this = this;
       this.$http.get('/category')
         .then(response => {
-          console.log(response);
           _this.categories = response.data;
         })
         .catch(error => {

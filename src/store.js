@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import sha256 from 'js-sha256';
 
 Vue.use(Vuex);
 
@@ -31,7 +32,7 @@ export default new Vuex.Store({
         axios.post('/sign-in', null, {
           params: {
             id: payload.id,
-            passwd: payload.passwd
+            passwd: sha256(payload.passwd)
           },
           headers: {
             'Content-Type': 'application/json'

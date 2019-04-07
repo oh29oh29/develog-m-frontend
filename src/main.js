@@ -5,7 +5,6 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import axios from 'axios';
-import VueCsrf from 'vue-csrf';
 import { MockContainer } from "./mock/MockContainer";
 // detail
 import 'tui-editor/dist/tui-editor-contents.css';
@@ -34,19 +33,13 @@ axios.interceptors.response.use(response => {
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
-Vue.use(VueCsrf);
-// Vue.use(VueCsrf, {
-//   selector: 'meta[name="csrf-token"]', // selector of csrf element with csrf-token value
-//   attribute: 'content', //attribute of csrf-token element
-// });
-
 const isDev = false;
 
 if (isDev) {
   new MockContainer(axios);
 }
 
-new Vue({
+const app = new Vue({
   router,
   store,
   render: h => h(App)

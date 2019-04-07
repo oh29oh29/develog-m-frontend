@@ -6,13 +6,13 @@
         <span class="logo-text">기술블로그</span>
       </router-link>
     </div>
-    <div class="member-wrap">
-      <div v-if="isSignedIn">
-        <span class="user-name" v-on:click="linkToProfile">{{ user.name }} 님</span>
-        <button class="sign-inout-btn" v-on:click="signOut">Sign out</button>
-      </div>
-      <router-link to="/sign-in" class="sign-inout-btn" v-else>Sign in</router-link>
-    </div>
+    <!--<div class="member-wrap">-->
+      <!--<div v-if="isSignedIn">-->
+        <!--<span class="user-name" v-on:click="linkToProfile">{{ user.name }} 님</span>-->
+        <!--<button class="sign-inout-btn" v-on:click="signOut">Sign out</button>-->
+      <!--</div>-->
+      <!--<router-link to="/sign-in" class="sign-inout-btn" v-else>Sign in</router-link>-->
+    <!--</div>-->
   </header>
 </template>
 
@@ -41,7 +41,6 @@ export default {
     signOut () {
       this.$store.dispatch('SIGN_OUT')
         .then(response => {
-          console.log(response);
           this.$router.go(0);
         })
         .catch(error => {

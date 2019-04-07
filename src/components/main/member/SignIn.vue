@@ -35,14 +35,13 @@ export default {
       const passwd = this.password;
       this.$store.dispatch('SIGN_IN', { id, passwd })
         .then(response => {
-          console.log(response);
           this.linkToHome();
         })
         .catch(error => {
           if (error.response.status === 401) {
             this.linkToSignIn();
           }
-        })
+        });
     },
     linkToHome () {
       this.$router.push('/');

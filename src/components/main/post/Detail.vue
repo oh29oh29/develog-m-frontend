@@ -11,10 +11,10 @@
       <viewer class="contents" :value="post.contents"/>
       <!-- 포스트 영역 끝 -->
       <!-- 댓글 영역 시작 -->
-      <div class="comments-wrap">
+      <!--<div class="comments-wrap">
         <span class="comments-count">댓글 {{ comments.length ? comments.length : 0 }}</span>
         <div class="comments-inner">
-          <!-- 댓글 시작 -->
+          &lt;!&ndash; 댓글 시작 &ndash;&gt;
           <div v-if="comments.length > 0">
             <div v-for="comment in comments" v-bind:key="comment.id" v-bind:class="{ 'comment': !comment.parentCommentId, 'child-comment': comment.parentCommentId }">
               <div class="comment-top">
@@ -37,13 +37,13 @@
                 </div>
                 <p v-else>{{ comment.contents }}</p>
               </div>
-              <!-- 대댓글 쓰기 시작 -->
+              &lt;!&ndash; 대댓글 쓰기 시작 &ndash;&gt;
               <div class="comment-reply-write" v-if="showCommentReply === comment.id">
                 <textarea class="comment-input-text"></textarea>
                 <button class="comment-reply-input-btn" v-on:click="writeComment">등록</button>
                 <button class="comment-reply-cancel-btn" v-on:click="cancelReplyComment">취소</button>
               </div>
-              <!-- 대댓글 쓰기 끝 -->
+              &lt;!&ndash; 대댓글 쓰기 끝 &ndash;&gt;
             </div>
           </div>
           <div v-else>
@@ -51,15 +51,15 @@
               <span class="empty-text">작성된 댓글이 없습니다.</span>
             </div>
           </div>
-          <!-- 댓글 끝 -->
-          <!-- 댓글 쓰기 시작 -->
+          &lt;!&ndash; 댓글 끝 &ndash;&gt;
+          &lt;!&ndash; 댓글 쓰기 시작 &ndash;&gt;
           <div v-if="isSignedIn" class="comment-write">
             <textarea class="comment-input-text"></textarea>
             <button class="comment-input-btn" v-on:click="writeComment">등록</button>
           </div>
-          <!-- 댓글 쓰기 끝 -->
+          &lt;!&ndash; 댓글 쓰기 끝 &ndash;&gt;
         </div>
-      </div>
+      </div>-->
       <!-- 댓글 영역 끝 -->
       <!-- 버튼 영역 시작 -->
       <div class="btn-wrap">
@@ -106,7 +106,6 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
           _this.post = response.data.post;
           _this.comments = response.data.comments;
         })
@@ -125,7 +124,6 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
           this.linkToList();
         })
         .catch(error => {

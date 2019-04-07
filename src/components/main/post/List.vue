@@ -81,7 +81,6 @@ export default {
           page: this.routeParams.page
         }
       }).then(response => {
-        console.log(response);
         _this.posts = response.data.posts;
         if (_this.posts.length > 0) {
           _this.page = response.data.page;

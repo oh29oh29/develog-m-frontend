@@ -82,7 +82,6 @@ export default {
       const categoryName = this.$route.params.categoryName;
       this.$http.get('/category')
         .then(response => {
-          console.log(response);
           _this.categories = response.data;
           _this.categories.every(category => {
             if (category.name === categoryName) {
@@ -92,6 +91,9 @@ export default {
             }
             return true;
           })
+        })
+        .catch(error => {
+          console.log(error);
         });
     },
     submit () {
@@ -99,7 +101,6 @@ export default {
       console.log('send data', this.post);
       this.$http.post('/post', this.post)
         .then(response => {
-          console.log(response);
           const post = response.data;
           _this.$router.push({
             name: 'detail',
@@ -115,7 +116,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-        })
+        });
     }
   }
 }

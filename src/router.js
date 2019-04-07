@@ -56,21 +56,21 @@ export default new Router({
           name: 'signUp',
           component: MSignUp
         },
-        {
-          path: 'profile',
-          name: 'profile',
-          component: MProfile
-        },
-        {
-          path: ':target/find',
-          name: 'accountFind',
-          component: MFindAccount
-        },
-        {
-          path: 'password/change',
-          name: 'passwordChange',
-          component: MPasswordChange
-        },
+        // {
+        //   path: 'profile',
+        //   name: 'profile',
+        //   component: MProfile
+        // },
+        // {
+        //   path: ':target/find',
+        //   name: 'accountFind',
+        //   component: MFindAccount
+        // },
+        // {
+        //   path: 'password/change',
+        //   name: 'passwordChange',
+        //   component: MPasswordChange
+        // },
         {
           path: 'post',
           name: 'post',
