@@ -33,9 +33,7 @@ axios.interceptors.response.use(response => {
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
-const isDev = false;
-
-if (isDev) {
+if (process.env.NODE_ENV === 'development') {
   new MockContainer(axios);
 }
 
